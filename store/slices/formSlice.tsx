@@ -25,6 +25,13 @@ export interface PersonalInformationSection {
   };
 }
 
+export interface Fields {
+  firstName: Field;
+  lastName: Field;
+  position: Field;
+  picture: PhotoField;
+}
+
 export interface Sections {
   personalInformation: PersonalInformationSection;
 }
@@ -90,7 +97,9 @@ export const formSlice = createSlice({
       action: PayloadAction<ChangeFieldPayload>
     ) => {
       const { section, field, value } = action.payload;
-      // state.sections[field as keyof Sections].fields[field].value = value;
+      state.sections[field as keyof Sections].fields[
+        field as keyof Fields
+      ].value = value;
     },
   },
 });
