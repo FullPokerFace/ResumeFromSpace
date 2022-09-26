@@ -1,7 +1,5 @@
 import pdfMake from "pdfMake";
 
-console.log(pdfMake);
-
 export const previewResume = (sections: any) => {
   const {
     personalInformation: {
@@ -29,7 +27,7 @@ export const previewResume = (sections: any) => {
       // bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
     },
   };
-  const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+  const pdfDocGenerator = (pdfMake as any).createPdf(docDefinition);
   pdfDocGenerator.getDataUrl((dataUrl: string) => {
     const iframe = document.getElementById(
       "resumePreviewPdf"
@@ -37,3 +35,5 @@ export const previewResume = (sections: any) => {
     iframe.data = dataUrl;
   });
 };
+
+export const downloadResume = () => {};
