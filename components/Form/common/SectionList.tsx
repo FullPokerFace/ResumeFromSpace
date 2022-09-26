@@ -10,42 +10,46 @@ const EXPAND_ALT = "Expand or Collapse Section";
 const PHOTO_PLACEHOLDER_ALT = "Photo";
 
 interface Props {
-  sections: Sections;
+  sections: any;
 }
 
 const SectionList = ({ sections }: Props) => {
   const expandCollapseSection = () => {};
 
-  return Object.keys(sections).length > 0 ? (
-    Object.keys(sections).map((name) => {
-      const { title, isRequired, fields } = sections[name];
-      return (
-        // Section
-        <div key={title}>
-          {/* Form Section Heading */}
-          <h1 className="flex justify-between items-center">
-            <span className="font-bold text-xs md:text-base">
-              {title} {isRequired ? "*" : ""}
-              {isRequired && (
-                <span className="text-slate-400 font-thin size">
-                  (required)
+  return (
+    <>
+      {Object.keys(sections).length > 0 ? (
+        Object.keys(sections).map((name: string) => {
+          const { title, isRequired, fields } = sections[name];
+          return (
+            // Section
+            <div key={title}>
+              {/* Form Section Heading */}
+              <h1 className="flex justify-between items-center">
+                <span className="font-bold text-xs md:text-base">
+                  {title} {isRequired ? "*" : ""}
+                  {isRequired && (
+                    <span className="text-slate-400 font-thin size">
+                      (required)
+                    </span>
+                  )}
                 </span>
-              )}
-            </span>
-            <button className="flex" onClick={expandCollapseSection}>
-              <Image src={expandCollapseArrow} alt={EXPAND_ALT} />
-            </button>
-          </h1>
-          <FieldList fields={fields} section={name} />
-        </div>
-      );
-    })
-  ) : (
-    <></>
+                <button className="flex" onClick={expandCollapseSection}>
+                  <Image src={expandCollapseArrow} alt={EXPAND_ALT} />
+                </button>
+              </h1>
+              <FieldList fields={fields} section={name} />
+            </div>
+          );
+        })
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
-const FieldList = ({ fields, section }) => {
+const FieldList = ({ fields, section }: any) => {
   const dispatch = useDispatch();
   return (
     <div className="flex flex-col p-4 lg:flex-row lg:flex-wrap">
@@ -58,7 +62,11 @@ const FieldList = ({ fields, section }) => {
               {...fieldProps}
               onChange={(e: InputEvent) => {
                 dispatch(
-                  setFieldValue({ section, field: name, value: e.target.value })
+                  setFieldValue({
+                    section,
+                    field: name,
+                    value: (e.target as HTMLInputElement).value,
+                  })
                 );
               }}
             />
@@ -68,8 +76,8 @@ const FieldList = ({ fields, section }) => {
   );
 };
 
-const Field = (props) => {
-  const renderFormElement = ({ type, title, value, autoComplete }) => {
+const Field = (props: any) => {
+  const renderFormElement = ({ type, title, value, autoComplete }: any) => {
     if (type === "text")
       return (
         <TextInput
@@ -83,11 +91,12 @@ const Field = (props) => {
       return (
         <PhotoInput value={value} onChange={props.onChange} title={title} />
       );
+    return "";
   };
   return <div className="w-full lg:w-1/2 p-2">{renderFormElement(props)}</div>;
 };
 
-const TextInput = ({ value, title, autoComplete, onChange }) => (
+const TextInput = ({ value, title, autoComplete, onChange }: any) => (
   <label htmlFor={title} className="flex flex-col font-thin gap-y-2">
     {title}
     <input
@@ -101,7 +110,7 @@ const TextInput = ({ value, title, autoComplete, onChange }) => (
   </label>
 );
 
-const PhotoInput = ({ title, value, onChange }) => {
+const PhotoInput = ({ title, value, onChange }: any) => {
   const handleImageChange = (e: React.FormEvent<HTMLInputElement>) => {
     const file = (e.target as HTMLInputElement).files?.[0] || null;
     if (!file) return;
