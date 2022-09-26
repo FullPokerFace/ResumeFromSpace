@@ -1,4 +1,4 @@
-import pdfMake from "pdfMake";
+import pdfMake from "pdfmake";
 
 export const previewResume = (sections: any) => {
   const {
