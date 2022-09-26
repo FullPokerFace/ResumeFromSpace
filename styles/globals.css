@@ -1,3 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* MontSerrat */
+/* OpenSans */
+@font-face {
+  font-family: Montserrat;
+  src: url("../components/ResumePreview/assets/fonts/Montserrat/Montserrat-Regular.ttf");
+}
+
+/* OpenSans */
+@font-face {
+  font-family: OpenSans;
+  src: url("../components/ResumePreview/assets/fonts/OpenSans/OpenSans-Regular.ttf");
+}
+
 html,
 body {
   padding: 0;
@@ -13,4 +30,10 @@ a {
 
 * {
   box-sizing: border-box;
+  outline: dashed 1px rgba(0, 0, 0, 0.1);
+}
+
+img {
+  margin: 0;
+  padding: 0;
 }
