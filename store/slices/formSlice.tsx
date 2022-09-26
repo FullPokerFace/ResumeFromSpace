@@ -90,7 +90,7 @@ export const formSlice = createSlice({
       action: PayloadAction<ChangeFieldPayload>
     ) => {
       const { section, field, value } = action.payload;
-      state.sections[section].fields[field].value = value;
+      // state.sections[field as keyof Sections].fields[field].value = value;
     },
   },
 });
