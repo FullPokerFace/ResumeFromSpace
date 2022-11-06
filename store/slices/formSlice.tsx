@@ -97,7 +97,7 @@ export const formSlice = createSlice({
       action: PayloadAction<ChangeFieldPayload>
     ) => {
       const { section, field, value } = action.payload;
-      state.sections[field as keyof Sections].fields[
+      state.sections[section as keyof Sections].fields[
         field as keyof Fields
       ].value = value;
     },

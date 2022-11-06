@@ -46,3 +46,9 @@ export const drawImage = (id: string, base64: string, width: number = 0) => {
     img.src = base64;
   }
 };
+
+export const combineName = (nameArray: string[]) => {
+  return nameArray && nameArray.length > 0
+    ? nameArray.join(" ").toUpperCase()
+    : "";
+};

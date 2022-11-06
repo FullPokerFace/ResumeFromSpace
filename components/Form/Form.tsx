@@ -7,7 +7,7 @@ const Form = () => {
   const { sections } = useSelector(getFormState);
 
   return (
-    <div className="flex flex-col w-1/2">
+    <div className="flex flex-col w-full md:w-1/2">
       <SectionList sections={sections} />
     </div>
   );

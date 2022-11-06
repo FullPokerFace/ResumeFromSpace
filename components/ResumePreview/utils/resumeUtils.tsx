@@ -1,20 +1,16 @@
 import pdfMake from "pdfmake";
 
-export const previewResume = (sections: any) => {
+export const generatePDF = (sections: any) => {
   const {
     personalInformation: {
       fields: { firstName, lastName, position, picture },
     },
   } = sections || {};
+
   const fontUrl = window.location.origin;
   let docDefinition = {
     compress: false,
-    content: [
-      // if you don't need styles, you can use a simple string to define a paragraph
-      `${firstName.value}`,
-      `${firstName.value}`,
-      `${position.value}`,
-    ],
+    content: [`${firstName.value}`, `${firstName.value}`, `${position.value}`],
     defaultStyle: {
       font: "Montserrat",
     },
@@ -28,12 +24,7 @@ export const previewResume = (sections: any) => {
     },
   };
   const pdfDocGenerator = (pdfMake as any).createPdf(docDefinition);
-  pdfDocGenerator.getDataUrl((dataUrl: string) => {
-    const iframe = document.getElementById(
-      "resumePreviewPdf"
-    ) as HTMLObjectElement;
-    iframe.data = dataUrl;
-  });
+  pdfDocGenerator.open({}, window);
 };
 
 export const downloadResume = () => {};

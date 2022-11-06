@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Breeze from "./resumesCollection/Breeze/Breeze";
-import { downloadResume } from "./utils/resumeUtils";
+import { downloadResume, generatePDF } from "./utils/resumeUtils";
+import Script from "next/script";
+import { useSelector } from "react-redux";
+import { getFormState } from "../../store/slices/formSlice";
 
 const LetterSizeWidth = 850;
 const LetterSizeHeight = 1100;
@@ -10,6 +13,8 @@ const ResumePreview = () => {
 
   const resumePreviewRef = useRef<HTMLDivElement>(null);
   const { current } = resumePreviewRef || {};
+
+  const { sections } = useSelector(getFormState);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -29,10 +34,10 @@ const ResumePreview = () => {
   }, [current]);
 
   return (
-    <div className="w-1/2">
+    <div className="w-full md:w-1/2">
       <p className="flex justify-end p-2">
         <button
-          onClick={downloadResume}
+          onClick={() => generatePDF(sections)}
           className="bg-slate-800 px-4 py-2 rounded-md text-white relative hover:bg-slate-600"
         >
           Download
@@ -41,11 +46,17 @@ const ResumePreview = () => {
       <div
         ref={resumePreviewRef}
         className="h-full"
-        style={{
-          height: `${Math.round(LetterSizeHeight * getRatio())}px`,
-        }}
+        style={{ height: `${Math.round(LetterSizeHeight * getRatio())}px` }}
       >
-        <Breeze height={`${Math.round(LetterSizeHeight * getRatio())}px`} />
+        <div
+          className="h-[1100px] w-[850px] shadow-lg border border-slate-200 max-h-fit"
+          style={{
+            transform: `scale(${getRatio()})`,
+            transformOrigin: "left top",
+          }}
+        >
+          <Breeze sections={sections} />
+        </div>
       </div>
     </div>
   );
