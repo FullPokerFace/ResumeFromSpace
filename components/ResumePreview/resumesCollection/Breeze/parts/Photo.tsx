@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { drawImage } from "../../../../Form/utils/formUtils";
 import { RESUME_IMAGE_WIDTH } from "../../../constants";
 
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const Photo: FC<Props> = (props) => {
-  const { src } = props || {};
+  const { src = "" } = props || {};
   useEffect(() => {
     drawImage("resumePhotoCanvas", src, RESUME_IMAGE_WIDTH);
   }, [src]);
