@@ -45,6 +45,10 @@ interface ChangeFieldPayload {
   field: string;
   value: string;
 }
+interface SetExpandPayload {
+  section: string;
+  value: boolean;
+}
 
 /**
  * Default state object with initial values.
@@ -101,6 +105,13 @@ export const formSlice = createSlice({
         field as keyof Fields
       ].value = value;
     },
+    setExpand: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<SetExpandPayload>
+    ) => {
+      const { section, value } = action.payload;
+      state.sections[section as keyof Sections].isExpanded = value;
+    },
   },
 });
 
@@ -108,6 +119,6 @@ export const formSlice = createSlice({
 export const getFormState = (state: { form: FormState }) => state.form;
 
 // Exports all actions
-export const { setFieldValue } = formSlice.actions;
+export const { setFieldValue, setExpand } = formSlice.actions;
 
 export default formSlice.reducer;
