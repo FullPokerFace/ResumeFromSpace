@@ -1,24 +1,31 @@
 import photoPlaceholderImage from "../assets/img/photoPlaceholder.svg";
 
-export const roundedImage = (
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number
-) => {
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-  ctx.lineTo(x + radius, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-  ctx.lineTo(x, y + radius);
-  ctx.quadraticCurveTo(x, y, x + radius, y);
-  ctx.closePath();
+export const generateRoundPhoto = (base64: string) => {
+  // Adding photo
+  let tmpCanvas = document.createElement("canvas") as HTMLCanvasElement,
+    tmpCtx = tmpCanvas.getContext("2d") as CanvasRenderingContext2D,
+    image = new Image();
+
+  image.src = base64 || photoPlaceholderImage;
+  const diametr = 600;
+  tmpCanvas.width = diametr;
+  tmpCanvas.height = diametr;
+
+  // draw the cached images to temporary canvas and return the context
+  tmpCtx.save();
+  tmpCtx.beginPath();
+  tmpCtx.arc(diametr / 2, diametr / 2, diametr / 2, 0, Math.PI * 2, true);
+  tmpCtx.closePath();
+  tmpCtx.clip();
+
+  tmpCtx.drawImage(image, 0, 0, diametr, diametr);
+
+  tmpCtx.beginPath();
+  tmpCtx.arc(0, 0, 2, 0, Math.PI * 2, true);
+  tmpCtx.clip();
+  tmpCtx.closePath();
+  tmpCtx.restore();
+  return tmpCanvas.toDataURL();
 };
 
 export const drawImage = (id: string, base64: string, width: number = 0) => {
@@ -45,6 +52,7 @@ export const drawImage = (id: string, base64: string, width: number = 0) => {
   } else {
     img.src = base64;
   }
+  return base64;
 };
 
 export const combineName = (nameArray: string[]) => {

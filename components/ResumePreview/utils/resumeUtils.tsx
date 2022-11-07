@@ -1,6 +1,6 @@
 import pdfMake from "pdfmake";
 
-export const generatePDF = (sections: any) => {
+export const generatePDF = (sections: any, content: any) => {
   const {
     personalInformation: {
       fields: { firstName, lastName, position, picture },
@@ -10,9 +10,14 @@ export const generatePDF = (sections: any) => {
   const fontUrl = window.location.origin;
   let docDefinition = {
     compress: false,
-    content: [`${firstName.value}`, `${firstName.value}`, `${position.value}`],
+    content: content,
     defaultStyle: {
       font: "Montserrat",
+    },
+    pageMargins: [60, 44, 60, 44],
+    pageSize: {
+      width: 850,
+      height: 1100,
     },
   };
   (pdfMake as any).fonts = {
@@ -24,7 +29,7 @@ export const generatePDF = (sections: any) => {
     },
   };
   const pdfDocGenerator = (pdfMake as any).createPdf(docDefinition);
-  pdfDocGenerator.open({}, window);
+  pdfDocGenerator.open();
 };
 
 export const downloadResume = () => {};

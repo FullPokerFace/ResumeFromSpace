@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Breeze from "./resumesCollection/Breeze/Breeze";
-import { downloadResume, generatePDF } from "./utils/resumeUtils";
-import Script from "next/script";
+import { generatePDF } from "./utils/resumeUtils";
 import { useSelector } from "react-redux";
 import { getFormState } from "../../store/slices/formSlice";
+import { generateBreezeContent } from "./resumesCollection/Breeze/content";
 
 const LetterSizeWidth = 850;
 const LetterSizeHeight = 1100;
@@ -37,7 +37,7 @@ const ResumePreview = () => {
     <div className="w-full md:w-1/2">
       <p className="flex justify-end p-2">
         <button
-          onClick={() => generatePDF(sections)}
+          onClick={() => generatePDF(sections, generateBreezeContent(sections))}
           className="bg-slate-800 px-4 py-2 rounded-md text-white relative hover:bg-slate-600"
         >
           Download
