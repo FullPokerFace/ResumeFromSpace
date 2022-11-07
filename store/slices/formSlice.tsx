@@ -1,4 +1,9 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
+import {
+  PersonalInformation,
+  PersonalInformationProps,
+} from "./personalInformationInitial";
+import { phoneEmailWeb, PhoneEmailWebProps } from "./PhoneEmailWebInitial";
 
 export interface Field {
   type: string;
@@ -13,18 +18,6 @@ export interface PhotoField {
   value: string;
 }
 
-export interface PersonalInformationSection {
-  title: string;
-  isRequired: boolean;
-  isExpanded: boolean;
-  fields: {
-    firstName: Field;
-    lastName: Field;
-    position: Field;
-    picture: PhotoField;
-  };
-}
-
 export interface Fields {
   firstName: Field;
   lastName: Field;
@@ -33,7 +26,8 @@ export interface Fields {
 }
 
 export interface Sections {
-  personalInformation: PersonalInformationSection;
+  personalInformation: PersonalInformationProps;
+  phoneEmailWeb: PhoneEmailWebProps;
 }
 
 export interface FormState {
@@ -55,34 +49,8 @@ interface SetExpandPayload {
  */
 const initialState: FormState = {
   sections: {
-    personalInformation: {
-      title: "Personal Information",
-      isRequired: true,
-      isExpanded: true,
-      fields: {
-        firstName: {
-          type: "text",
-          title: "First Name",
-          value: "Josefin",
-        },
-        lastName: {
-          type: "text",
-          title: "Last Name",
-          value: "Dalton",
-        },
-        position: {
-          type: "text",
-          title: "Position",
-          value: "Marketing Menager",
-          autoComplete: "off",
-        },
-        picture: {
-          type: "photo",
-          title: "Photo",
-          value: "",
-        },
-      },
-    },
+    personalInformation: PersonalInformation,
+    phoneEmailWeb: phoneEmailWeb,
   },
 };
 

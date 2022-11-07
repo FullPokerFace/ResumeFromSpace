@@ -16,9 +16,10 @@ const Breeze: FC<Props> = (props) => {
   const { sections } = props || {};
   const dispatch = useDispatch();
 
-  const { personalInformation } = sections || {};
-  const { fields } = personalInformation || {};
-  const { firstName, lastName, position, picture } = fields || {};
+  const { personalInformation, phoneEmailWeb } = sections || {};
+  const { firstName, lastName, position, picture } =
+    personalInformation?.fields || {};
+  const { phone, email, web } = phoneEmailWeb?.fields || {};
 
   return (
     <div
@@ -36,7 +37,11 @@ const Breeze: FC<Props> = (props) => {
           fullName={combineName([firstName.value, lastName.value])}
           position={combineName([position.value.toUpperCase()])}
         />
-        <PhoneEmailWeb />
+        <PhoneEmailWeb
+          phone={phone?.value}
+          email={email?.value}
+          web={web?.value}
+        />
       </div>
     </div>
   );

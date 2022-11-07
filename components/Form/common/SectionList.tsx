@@ -1,9 +1,10 @@
 import { FC } from "react";
-import { PersonalInformationSection } from "../../../store/slices/formSlice";
+import { PersonalInformationProps } from "../../../store/slices/personalInformationInitial";
+import { PhoneEmailWebProps } from "../../../store/slices/PhoneEmailWebInitial";
 import { Section } from "./Section";
 
 interface Props {
-  sections: PersonalInformationSection | {};
+  sections: PersonalInformationProps | PhoneEmailWebProps | {};
 }
 
 const SectionList: FC<Props> = (props) => {

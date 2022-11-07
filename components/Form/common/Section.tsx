@@ -32,22 +32,24 @@ export const Section: FC<Props> = (props) => {
   return (
     <div key={title}>
       {/* Form Section Heading */}
-      <h1 className="flex justify-between items-center">
+      <button
+        className="flex justify-between items-center w-full"
+        onClick={expandCollapseSection}
+      >
         <span className="font-bold text-xs md:text-base">
           {title} {isRequired ? "*" : ""}
           {isRequired && (
             <span className="text-slate-400 font-thin size">(required)</span>
           )}
         </span>
-        <button
+        <span
           className={`flex transition-all ${
             isExpanded ? "rotate-90" : "rotate-0"
           }`}
-          onClick={expandCollapseSection}
         >
           <Image src={expandCollapseArrow} alt={EXPAND_ALT} />
-        </button>
-      </h1>
+        </span>
+      </button>
       <AnimatedHeightContainer open={isExpanded}>
         <FieldList fields={fields} section={sectionName} />
       </AnimatedHeightContainer>
