@@ -35,7 +35,7 @@ const Breeze: FC<Props> = (props) => {
       <div className="w-[466px]">
         <NameAndPostion
           fullName={combineName([firstName.value, lastName.value])}
-          position={position.value.toUpperCase())}
+          position={position.value.toUpperCase()}
         />
         <PhoneEmailWeb
           phone={phone?.value}
