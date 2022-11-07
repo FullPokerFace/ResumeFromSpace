@@ -1,12 +1,13 @@
 import photoPlaceholderImage from "../assets/img/photoPlaceholder.svg";
 
-export const generateRoundPhoto = (base64: string) => {
+export const generateRoundPhoto = async (base64: string) => {
   // Adding photo
   let tmpCanvas = document.createElement("canvas") as HTMLCanvasElement,
     tmpCtx = tmpCanvas.getContext("2d") as CanvasRenderingContext2D,
     image = new Image();
+  image.src = base64 || photoPlaceholderImage?.src;
 
-  image.src = base64 || photoPlaceholderImage;
+  await image.decode();
   const diametr = 600;
   tmpCanvas.width = diametr;
   tmpCanvas.height = diametr;

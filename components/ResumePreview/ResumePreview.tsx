@@ -22,6 +22,11 @@ const ResumePreview = () => {
     });
   }, [current]);
 
+  const downloadResume = async () => {
+    const content = await generateBreezeContent(sections);
+    generatePDF(sections, content);
+  };
+
   const getRatio = () => {
     if (componentWidth < LetterSizeWidth) {
       return Number((+componentWidth / LetterSizeWidth).toFixed(3));
@@ -37,7 +42,7 @@ const ResumePreview = () => {
     <div className="w-full md:w-1/2">
       <p className="flex justify-end p-2">
         <button
-          onClick={() => generatePDF(sections, generateBreezeContent(sections))}
+          onClick={downloadResume}
           className="bg-slate-800 px-4 py-2 rounded-md text-white relative hover:bg-slate-600"
         >
           Download

@@ -1,6 +1,8 @@
 import pdfMake from "pdfmake";
+import generateStyles from "../resumesCollection/Breeze/styles";
+import backgroundImage from "../resumesCollection/Breeze/resumeBack.png";
 
-export const generatePDF = (sections: any, content: any) => {
+export const generatePDF = async (sections: any, content: any) => {
   const {
     personalInformation: {
       fields: { firstName, lastName, position, picture },
@@ -8,9 +10,19 @@ export const generatePDF = (sections: any, content: any) => {
   } = sections || {};
 
   const fontUrl = window.location.origin;
+  const bgImage = await imageToDataUrl(backgroundImage.src, 850, 1100);
   let docDefinition = {
     compress: false,
     content: content,
+    styles: generateStyles({
+      primaryColor: "#1F2937",
+      secondaryColor: "#6B7280",
+    }),
+    // background: {
+    //   image: bgImage,
+    //   width: 850,
+    //   height: 1100,
+    // },
     defaultStyle: {
       font: "Montserrat",
     },
@@ -32,4 +44,15 @@ export const generatePDF = (sections: any, content: any) => {
   pdfDocGenerator.open();
 };
 
-export const downloadResume = () => {};
+const imageToDataUrl = async (src, width, height) => {
+  let tmpCanvas = document.createElement("canvas") as HTMLCanvasElement,
+    tmpCtx = tmpCanvas.getContext("2d") as CanvasRenderingContext2D,
+    image = new Image();
+  image.src = src;
+
+  await image.decode();
+  tmpCanvas.width = width;
+  tmpCanvas.height = height;
+  tmpCtx.drawImage(image, 0, 0, width, height);
+  return tmpCanvas.toDataURL();
+};

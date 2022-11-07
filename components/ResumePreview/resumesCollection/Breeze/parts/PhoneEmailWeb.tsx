@@ -11,24 +11,24 @@ export const PhoneEmailWeb: FC<Props> = (props) => {
   return (
     <div className=" mt-[22px] py-[16px] flex justify-center gap-8 border-b-[1px] border-t-[1px] border-gray-600">
       {/* Phone */}
-      <span className="flex gap-[16px]">
-        <span className="border-b-[1px] border-b-gray-600">{phoneSVG}</span>
+      <span className="flex gap-[8px] items-center">
+        {phoneSVG}
         <span className="flex flex-col text-[12px] font-semibold">
           Phone
           <span className="text-[12px] font-light">{phone}</span>
         </span>
       </span>
       {/* Email */}
-      <span className="flex gap-[16px]">
-        <span className="border-b-[1px] border-b-gray-600">{emailSVG}</span>
+      <span className="flex gap-[8px] items-center">
+        {emailSVG}
         <span className="flex flex-col text-[12px] font-semibold">
           Email
           <span className="text-[12px] font-light">{email}</span>
         </span>
       </span>
       {/* Website */}
-      <span className="flex gap-[16px]">
-        <span className="border-b-[1px] border-b-gray-600">{webSVG}</span>
+      <span className="flex gap-[8px] items-center">
+        {webSVG}
         <span className="flex flex-col text-[12px] font-semibold">
           Web
           <span className="text-[12px] font-light">{web}</span>
@@ -45,7 +45,7 @@ const phoneSVG = (
     viewBox="0 0 24 24"
     strokeWidth="1.5"
     stroke="currentColor"
-    className="w-6 h-6"
+    className="w-[24px] h-[24px]"
   >
     <path
       strokeLinecap="round"
@@ -62,7 +62,7 @@ const emailSVG = (
     viewBox="0 0 24 24"
     strokeWidth="1.5"
     stroke="currentColor"
-    className="w-6 h-6"
+    className="w-[24px] h-[24px]"
   >
     <path
       strokeLinecap="round"
@@ -78,7 +78,7 @@ const webSVG = (
     viewBox="0 0 24 24"
     strokeWidth="1.5"
     stroke="currentColor"
-    className="w-6 h-6"
+    className="w-[24px] h-[24px]"
   >
     <path
       strokeLinecap="round"

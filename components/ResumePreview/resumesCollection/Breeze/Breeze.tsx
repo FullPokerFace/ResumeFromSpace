@@ -25,7 +25,7 @@ const Breeze: FC<Props> = (props) => {
     <div
       className="text-gray-800 min-h-full bg-cover flex px-[60px] py-[44px] gap-[44px]"
       style={{
-        backgroundImage: `url('${backgroundImage.src}')`,
+        // backgroundImage: `url('${backgroundImage.src}')`,
         fontFamily: "OpenSans",
       }}
     >
