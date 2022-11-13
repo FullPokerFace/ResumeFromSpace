@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { PersonalInformationProps } from "../../../store/slices/personalInformationInitial";
-import { PhoneEmailWebProps } from "../../../store/slices/PhoneEmailWebInitial";
+import { PhoneEmailWebProps } from "../../../store/slices/phoneEmailWebInitial";
 import { Section } from "./Section";
 
 interface Props {

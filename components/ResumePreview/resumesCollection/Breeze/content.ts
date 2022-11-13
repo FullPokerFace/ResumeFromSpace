@@ -1,3 +1,4 @@
+import { Sections } from "../../../../store/slices/formSlice";
 import { combineName, generateRoundPhoto } from "../../../Form/utils/formUtils";
 
 
@@ -59,7 +60,7 @@ const addIconWithText = (icon, text, label) => (
       { width: 24, svg: icon, margin: [0,4] },
       { stack: [
         { text: label, style: 't3' },
-        { text: text, style: 't3' },
+        { text: text, style: 't4' },
       ]}
     ], columnGap: 8, width: 'auto'
 })
@@ -78,13 +79,21 @@ const addPhoneEmailWeb = (phone: string, email: string, web: string) => {
   }
 }
 
-const DIVIDER = (width: number) => ({ svg : `<svg width="${width}" height="1" viewBox="0 0 ${width} 1" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="${width}" height="0.1" fill="#BCBDC0"/></svg>`});
+const addTitle = (title: string) => {
+  return { text: title.toUpperCase(), style: 't5' }
+}
+const addText = (text: string) => {
+  return { text: text, style: 't6' }
+}
 
-export const generateBreezeContent = async (sections: any) => {
-  const { personalInformation, phoneEmailWeb } = sections || {};
+const DIVIDER = (width: number) => ({ svg : `<svg width="${width}" height="1" viewBox="0 0 ${width} 1" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="${width}" height="1" fill="#BCBDC0"/></svg>`});
+
+export const generateBreezeContent = async (sections: Sections) => {
+  const { personalInformation, phoneEmailWeb, summary } = sections || {};
   const { firstName, lastName, position, picture } =
     personalInformation?.fields || {};
   const { phone, email, web } = phoneEmailWeb?.fields || {};
+  const summaryFields = summary?.fields.summary || {};
 
   const rightSide = [
     { image: await generateRoundPhoto(picture?.value),
@@ -99,10 +108,13 @@ export const generateBreezeContent = async (sections: any) => {
     DIVIDER(446),
     addPhoneEmailWeb(phone.value, email.value, web.value),
     DIVIDER(446),
+    addTitle('Profile'),
+    DIVIDER(446),
+    addText(summaryFields.value),
+
 
   ]
 
-  console.log(leftSide)
 
   return ([
     {

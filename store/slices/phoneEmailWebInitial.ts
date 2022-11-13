@@ -11,7 +11,7 @@ export interface PhoneEmailWebProps {
   };
 }
 
-export const phoneEmailWeb = {
+export const phoneEmailWebSlice = {
   title: "Phone, Email, Web",
   isRequired: true,
   isExpanded: false,

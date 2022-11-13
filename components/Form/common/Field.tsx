@@ -1,4 +1,5 @@
 import { PhotoInput } from "./PhotoInput";
+import { RichTextInput } from "./RichTextInput";
 import { TextInput } from "./TextInput";
 
 export const Field = (props: any) => {
@@ -12,11 +13,26 @@ export const Field = (props: any) => {
           onChange={props.onChange}
         />
       );
+    if (type === "richText")
+      return (
+        <RichTextInput
+          value={value}
+          title={title}
+          autoComplete={autoComplete}
+          onChange={props.onChange}
+        />
+      );
     if (type === "photo")
       return (
         <PhotoInput value={value} onChange={props.onChange} title={title} />
       );
     return "";
   };
-  return <div className="w-full lg:w-1/2 p-2">{renderFormElement(props)}</div>;
+  return (
+    <div
+      className={`w-full ${props?.type === "richText" ? "" : "lg:w-1/2"}  p-2`}
+    >
+      {renderFormElement(props)}
+    </div>
+  );
 };

@@ -1,9 +1,10 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
 import {
-  PersonalInformation,
+  personalInformationSlice,
   PersonalInformationProps,
 } from "./personalInformationInitial";
-import { phoneEmailWeb, PhoneEmailWebProps } from "./PhoneEmailWebInitial";
+import { phoneEmailWebSlice, PhoneEmailWebProps } from "./phoneEmailWebInitial";
+import { summarySlice, summaryProps } from "./summaryInitial";
 
 export interface Field {
   type: string;
@@ -28,9 +29,17 @@ export interface Fields {
 export interface Sections {
   personalInformation: PersonalInformationProps;
   phoneEmailWeb: PhoneEmailWebProps;
+  summary: summaryProps;
+}
+
+export interface Colors {
+  primaryColor: string;
+  secondaryColor: string;
 }
 
 export interface FormState {
+  updateIn: null | number;
+  colors: Colors;
   sections: Sections;
 }
 
@@ -43,14 +52,23 @@ interface SetExpandPayload {
   section: string;
   value: boolean;
 }
+interface setUpdatePayload {
+  milliseconds: number | null;
+}
 
 /**
  * Default state object with initial values.
  */
 const initialState: FormState = {
+  updateIn: null,
+  colors: {
+    primaryColor: "#3E3A3B",
+    secondaryColor: "#707070",
+  },
   sections: {
-    personalInformation: PersonalInformation,
-    phoneEmailWeb: phoneEmailWeb,
+    personalInformation: personalInformationSlice,
+    phoneEmailWeb: phoneEmailWebSlice,
+    summary: summarySlice,
   },
 };
 
@@ -80,6 +98,13 @@ export const formSlice = createSlice({
       const { section, value } = action.payload;
       state.sections[section as keyof Sections].isExpanded = value;
     },
+    setUpdateIn: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<setUpdatePayload>
+    ) => {
+      const { milliseconds } = action.payload;
+      state.updateIn = milliseconds;
+    },
   },
 });
 
@@ -87,6 +112,6 @@ export const formSlice = createSlice({
 export const getFormState = (state: { form: FormState }) => state.form;
 
 // Exports all actions
-export const { setFieldValue, setExpand } = formSlice.actions;
+export const { setFieldValue, setExpand, setUpdateIn } = formSlice.actions;
 
 export default formSlice.reducer;

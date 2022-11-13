@@ -8,7 +8,7 @@ export const generateRoundPhoto = async (base64: string) => {
   image.src = base64 || photoPlaceholderImage?.src;
 
   await image.decode();
-  const diametr = 600;
+  const diametr = 1000;
   tmpCanvas.width = diametr;
   tmpCanvas.height = diametr;
 

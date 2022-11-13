@@ -1,5 +1,9 @@
 import { useDispatch } from "../../../store/store";
-import { Fields, setFieldValue } from "../../../store/slices/formSlice";
+import {
+  Fields,
+  setFieldValue,
+  setUpdateIn,
+} from "../../../store/slices/formSlice";
 import { Field } from "./Field";
 import { FC } from "react";
 
@@ -11,8 +15,19 @@ interface Props {
 export const FieldList: FC<Props> = (props) => {
   const { fields, section } = props || {};
   const dispatch = useDispatch();
+
+  const handleChange = (e: InputEvent, name: string) => {
+    dispatch(
+      setFieldValue({
+        section,
+        field: name,
+        value: (e.target as HTMLInputElement).value,
+      })
+    );
+    dispatch(setUpdateIn({ milliseconds: 500 }));
+  };
   return (
-    <div className="flex flex-col p-4 lg:flex-row lg:flex-wrap">
+    <div className="flex flex-col px-4 py-2 lg:flex-row lg:flex-wrap">
       {Object.keys(fields).length > 0 &&
         Object.keys(fields).map((name) => {
           const fieldProps = fields[name];
@@ -20,15 +35,7 @@ export const FieldList: FC<Props> = (props) => {
             <Field
               key={name}
               {...fieldProps}
-              onChange={(e: InputEvent) => {
-                dispatch(
-                  setFieldValue({
-                    section,
-                    field: name,
-                    value: (e.target as HTMLInputElement).value,
-                  })
-                );
-              }}
+              onChange={(e) => handleChange(e, name)}
             />
           );
         })}

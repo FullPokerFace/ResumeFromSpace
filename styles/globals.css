@@ -37,3 +37,41 @@ img {
   margin: 0;
   padding: 0;
 }
+
+/* Scroll Bar */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d2d2d2 #f0f0f0;
+}
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 6px;
+  background-color: #f0f0f0;
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: #f0f0f0;
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: #f0f0f0;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: #d2d2d2;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #999999;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #999999;
+}

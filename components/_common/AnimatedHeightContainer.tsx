@@ -35,7 +35,7 @@ const AnimatedHeightContainer: FC<Props> = (props) => {
       ref={contentRef}
       style={
         open
-          ? { maxHeight: `${maxH + 8}px`, paddingTop: "8px" }
+          ? { maxHeight: `${maxH}px`, paddingTop: "0" }
           : { maxHeight: 0, paddingTop: 0 }
       }
       className={`transition-all overflow-hidden ${className}`}

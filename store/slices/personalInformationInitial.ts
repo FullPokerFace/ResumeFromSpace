@@ -12,10 +12,10 @@ export interface PersonalInformationProps {
   };
 }
 
-export const PersonalInformation = {
+export const personalInformationSlice = {
   title: "Personal Information",
   isRequired: true,
-  isExpanded: true,
+  isExpanded: false,
   fields: {
     firstName: {
       type: "text",
