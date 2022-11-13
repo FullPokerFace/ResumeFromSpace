@@ -118,11 +118,7 @@ export const updateResume = async (
     });
 
     if (triggerDownload) {
-      var link = document.createElement("a"); // Or maybe get it from the current document
-      link.href = blobUrl;
-      link.download = "aDefaultFileName.pdf";
-      document.body.appendChild(link); // Or append it whereever you want
-      link.click();
+      open(blobUrl, "_self");
     }
   });
 

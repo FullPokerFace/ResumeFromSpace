@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
 import Form from "../components/Form/Form";
 import Header from "../components/Header/Header";
 import ResumePreview from "../components/ResumePreview/ResumePreview";
