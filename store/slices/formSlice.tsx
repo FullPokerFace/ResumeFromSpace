@@ -38,7 +38,9 @@ export interface Colors {
 }
 
 export interface FormState {
+  isPreviewLoading: boolean;
   updateIn: null | number;
+  resizeIn: null | number;
   colors: Colors;
   sections: Sections;
 }
@@ -55,12 +57,17 @@ interface SetExpandPayload {
 interface setUpdatePayload {
   milliseconds: number | null;
 }
+interface setResizeInPayload {
+  milliseconds: number | null;
+}
 
 /**
  * Default state object with initial values.
  */
 const initialState: FormState = {
+  isPreviewLoading: false,
   updateIn: null,
+  resizeIn: null,
   colors: {
     primaryColor: "#3E3A3B",
     secondaryColor: "#707070",
@@ -104,6 +111,21 @@ export const formSlice = createSlice({
     ) => {
       const { milliseconds } = action.payload;
       state.updateIn = milliseconds;
+      state.isPreviewLoading = true;
+    },
+    setResizeIn: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<setResizeInPayload>
+    ) => {
+      const { milliseconds } = action.payload;
+      state.resizeIn = milliseconds;
+      state.isPreviewLoading = true;
+    },
+    setIsPreviewLoading: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<boolean>
+    ) => {
+      state.isPreviewLoading = action.payload;
     },
   },
 });
@@ -112,6 +134,12 @@ export const formSlice = createSlice({
 export const getFormState = (state: { form: FormState }) => state.form;
 
 // Exports all actions
-export const { setFieldValue, setExpand, setUpdateIn } = formSlice.actions;
+export const {
+  setFieldValue,
+  setExpand,
+  setUpdateIn,
+  setIsPreviewLoading,
+  setResizeIn,
+} = formSlice.actions;
 
 export default formSlice.reducer;

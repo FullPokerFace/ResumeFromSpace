@@ -85,43 +85,42 @@ export const updateResume = async (
       bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
     },
   };
-  pdfDocGenerator.getBlob((blob) => {
-    var blobUrl = URL.createObjectURL(blob);
+  return await pdfDocGenerator.getBlob(async (blob) => {
+    const blobUrl = URL.createObjectURL(blob);
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-    var loadingTask = pdfjsLib.getDocument(blobUrl);
-    loadingTask.promise.then(function (pdf) {
-      pdf.getPage(1).then(function (page) {
-        var scale = ratio;
-        var viewport = page.getViewport({ scale: scale });
-        // Support HiDPI-screens.
-        var outputScale = window.devicePixelRatio || 1;
+    const loadingTask = pdfjsLib.getDocument(blobUrl);
+    const pdf = await loadingTask.promise;
+    const page = await pdf.getPage(1);
+    var scale = ratio;
+    var viewport = page.getViewport({ scale: scale });
+    // Support HiDPI-screens.
+    var outputScale = window.devicePixelRatio || 1;
 
-        var canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
-        var context = canvas.getContext("2d");
+    var canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+    var context = canvas.getContext("2d");
 
-        canvas.width = Math.floor(viewport.width * outputScale);
-        canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = Math.floor(viewport.width) + "px";
-        canvas.style.height = Math.floor(viewport.height) + "px";
+    canvas.width = Math.floor(viewport.width * outputScale);
+    canvas.height = Math.floor(viewport.height * outputScale);
+    canvas.style.width = Math.floor(viewport.width) + "px";
+    canvas.style.height = Math.floor(viewport.height) + "px";
 
-        var transform =
-          outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+    var transform =
+      outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
 
-        var renderContext = {
-          canvasContext: context,
-          transform: transform,
-          viewport: viewport,
-        };
-        page.render(renderContext);
-      });
-    });
+    var renderContext = {
+      canvasContext: context,
+      transform: transform,
+      viewport: viewport,
+    };
+    await page.render(renderContext);
+    console.log("loaded");
 
     if (triggerDownload) {
       open(blobUrl, "_self");
     }
   });
-
+  console.log("loaded");
   return;
 
   const response = await fetch("http://localhost:4000/renderPDF", {
