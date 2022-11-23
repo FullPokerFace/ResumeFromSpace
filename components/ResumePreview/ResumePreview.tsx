@@ -36,7 +36,7 @@ const ResumePreview = () => {
 
   const handleDownload = async () => {
     const content = await generateBreezeContent(sections);
-    updateResume(sections, content, colors, true, getRatio());
+    await updateResume(sections, content, colors, true, getRatio());
   };
 
   const handleUpdateResume = async () => {

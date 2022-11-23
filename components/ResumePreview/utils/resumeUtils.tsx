@@ -118,6 +118,10 @@ export const updateResume = async (
 
     if (triggerDownload) {
       open(blobUrl, "_self");
+      if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+        (window.navigator as any).msSaveOrOpenBlob(blobUrl);
+        return;
+      } else open(blobUrl, "_self");
     }
   });
   console.log("loaded");
