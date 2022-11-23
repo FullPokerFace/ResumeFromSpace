@@ -42,7 +42,9 @@ const ResumePreview = () => {
   const handleUpdateResume = async () => {
     const content = await generateBreezeContent(sections);
     await updateResume(sections, content, colors, false, getRatio());
-    dispatch(setIsPreviewLoading(false));
+    setTimeout(() => {
+      dispatch(setIsPreviewLoading(false));
+    }, 200);
   };
 
   useEffect(() => {
@@ -98,7 +100,7 @@ const ResumePreview = () => {
         }}
       >
         <div
-          className={`shadow-lg border border-slate-200 max-h-fit relative ${
+          className={`shadow-lg border border-slate-200 max-h-fit relative overflow-x-hidden ${
             isPreviewLoading ? "opacity-50" : ""
           }`}
           style={{

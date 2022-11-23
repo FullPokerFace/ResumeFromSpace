@@ -33,14 +33,17 @@ export const Section: FC<Props> = (props) => {
     <div key={title}>
       {/* Form Section Heading */}
       <button
-        className="flex justify-between items-center w-full"
+        className="flex justify-between items-center w-full gap-2"
         onClick={expandCollapseSection}
       >
-        <span className="font-bold text-xs md:text-base">
-          {title} {isRequired ? "*" : ""}
-          {isRequired && (
-            <span className="text-slate-400 font-thin size">(required)</span>
-          )}
+        <span className="font-bold text-lg sm:text-s md:text-base text-left">
+          {title}{" "}
+          <span className="whitespace-nowrap">
+            {isRequired ? "*" : ""}
+            {isRequired && (
+              <span className="text-slate-400 font-thin size">(required)</span>
+            )}
+          </span>
         </span>
         <span
           className={`flex transition-all ${

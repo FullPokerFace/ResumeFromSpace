@@ -85,36 +85,36 @@ export const updateResume = async (
       bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
     },
   };
-  return await pdfDocGenerator.getBlob(async (blob) => {
+  await pdfDocGenerator.getBlob(async (blob) => {
     const blobUrl = URL.createObjectURL(blob);
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
     const loadingTask = pdfjsLib.getDocument(blobUrl);
     const pdf = await loadingTask.promise;
     const page = await pdf.getPage(1);
-    var scale = ratio;
-    var viewport = page.getViewport({ scale: scale });
+    let scale = ratio;
+    let viewport = page.getViewport({ scale: scale });
     // Support HiDPI-screens.
-    var outputScale = window.devicePixelRatio || 1;
+    let outputScale = window.devicePixelRatio || 1;
 
-    var canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
-    var context = canvas.getContext("2d");
+    let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+    let context = canvas.getContext("2d");
+    console.log("loaded");
 
     canvas.width = Math.floor(viewport.width * outputScale);
     canvas.height = Math.floor(viewport.height * outputScale);
     canvas.style.width = Math.floor(viewport.width) + "px";
     canvas.style.height = Math.floor(viewport.height) + "px";
 
-    var transform =
+    let transform =
       outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
 
-    var renderContext = {
+    let renderContext = {
       canvasContext: context,
       transform: transform,
       viewport: viewport,
     };
     await page.render(renderContext);
-    console.log("loaded");
 
     if (triggerDownload) {
       open(blobUrl, "_self");
