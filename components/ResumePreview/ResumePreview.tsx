@@ -10,6 +10,7 @@ import {
 } from "../../store/slices/formSlice";
 import { generateBreezeContent } from "./resumesCollection/Breeze/content";
 import { Loader } from "../_common/Loader";
+import generateStyles from "./resumesCollection/Breeze/styles";
 
 let updateTimeout: any = null;
 let resizeInTimeout: any = null;
@@ -36,12 +37,53 @@ const ResumePreview = () => {
 
   const handleDownload = async () => {
     const content = await generateBreezeContent(sections);
-    await updateResume(sections, content, colors, true, getRatio());
+    const styles = generateStyles({
+      primaryColor: colors.primaryColor,
+      secondaryColor: colors.secondaryColor,
+    });
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({ content, styles }),
+    };
+    const response = await fetch("/renderPDF", options);
+    const result = await response.json();
+    await updateResume(
+      sections,
+      content,
+      colors,
+      true,
+      getRatio(),
+      result.insertedId
+    );
   };
 
   const handleUpdateResume = async () => {
     const content = await generateBreezeContent(sections);
-    await updateResume(sections, content, colors, false, getRatio());
+    const styles = generateStyles({
+      primaryColor: colors.primaryColor,
+      secondaryColor: colors.secondaryColor,
+    });
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({ content, styles }),
+    };
+    const response = await fetch("/renderPDF", options);
+    const result = await response.json();
+
+    await updateResume(
+      sections,
+      content,
+      colors,
+      false,
+      getRatio(),
+      result.insertedId
+    );
     setTimeout(() => {
       dispatch(setIsPreviewLoading(false));
     }, 200);

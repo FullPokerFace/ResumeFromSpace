@@ -72,106 +72,104 @@ export const updateResume = async (
   content,
   colors,
   triggerDownload = false,
-  ratio = 1
+  ratio = 1,
+  resumeId
 ) => {
-  const docDef = await generatePDF(sections, content, colors);
-  const pdfDocGenerator = (pdfMake as any).createPdf(docDef);
-  const fontUrl = window.location.origin;
-  (pdfDocGenerator as any).fonts = {
-    Montserrat: {
-      normal: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      // bolditalics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      // italics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
-    },
-  };
-  await pdfDocGenerator.getBlob(async (blob) => {
-    const blobUrl = URL.createObjectURL(blob);
+  // const docDef = await generatePDF(sections, content, colors);
+  // const pdfDocGenerator = (pdfMake as any).createPdf(docDef);
+  // const fontUrl = window.location.origin;
+  // (pdfDocGenerator as any).fonts = {
+  //   Montserrat: {
+  //     normal: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+  //     // bolditalics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+  //     // italics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+  //     bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
+  //   },
+  // };
+  // await pdfDocGenerator.getBlob(async (blob) => {
+  // const blobUrl = URL.createObjectURL(blob);
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-    const loadingTask = pdfjsLib.getDocument(blobUrl);
-    const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-    let scale = ratio;
-    let viewport = page.getViewport({ scale: scale });
-    // Support HiDPI-screens.
-    let outputScale = window.devicePixelRatio || 1;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+  const loadingTask = pdfjsLib.getDocument(
+    `http://localhost:3000/viewPdf/${resumeId}`
+  );
+  const pdf = await loadingTask.promise;
+  const page = await pdf.getPage(1);
+  let scale = ratio;
+  let viewport = page.getViewport({ scale: scale });
+  // Support HiDPI-screens.
+  let outputScale = window.devicePixelRatio || 1;
 
-    let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
-    let context = canvas.getContext("2d");
-    console.log("loaded");
-
-    canvas.width = Math.floor(viewport.width * outputScale);
-    canvas.height = Math.floor(viewport.height * outputScale);
-    canvas.style.width = Math.floor(viewport.width) + "px";
-    canvas.style.height = Math.floor(viewport.height) + "px";
-
-    let transform =
-      outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-
-    let renderContext = {
-      canvasContext: context,
-      transform: transform,
-      viewport: viewport,
-    };
-    await page.render(renderContext);
-
-    if (triggerDownload) {
-      open(blobUrl, "_self");
-      if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
-        (window.navigator as any).msSaveOrOpenBlob(blobUrl);
-        return;
-      } else open(blobUrl, "_self");
-    }
-  });
+  let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+  let context = canvas.getContext("2d");
   console.log("loaded");
+
+  canvas.width = Math.floor(viewport.width * outputScale);
+  canvas.height = Math.floor(viewport.height * outputScale);
+  canvas.style.width = Math.floor(viewport.width) + "px";
+  canvas.style.height = Math.floor(viewport.height) + "px";
+
+  let transform =
+    outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+
+  let renderContext = {
+    canvasContext: context,
+    transform: transform,
+    viewport: viewport,
+  };
+  await page.render(renderContext);
+
+  if (triggerDownload) {
+    open(`/viewPdf/${resumeId}`, "_blank");
+  }
+  // });
   return;
 
-  const response = await fetch("http://localhost:4000/renderPDF", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify(docDef),
-  });
-  response.blob().then((myBlob) => {
-    var blobUrl = URL.createObjectURL(myBlob);
+  // const response = await fetch("http://localhost:4000/renderPDF", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json;charset=utf-8",
+  //   },
+  //   body: JSON.stringify(docDef),
+  // });
+  // response.blob().then((myBlob) => {
+  //   var blobUrl = URL.createObjectURL(myBlob);
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-    var loadingTask = pdfjsLib.getDocument(blobUrl);
-    loadingTask.promise.then(function (pdf) {
-      pdf.getPage(1).then(function (page) {
-        var scale = ratio;
-        var viewport = page.getViewport({ scale: scale });
-        // Support HiDPI-screens.
-        var outputScale = window.devicePixelRatio || 1;
+  //   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+  //   var loadingTask = pdfjsLib.getDocument(blobUrl);
+  //   loadingTask.promise.then(function (pdf) {
+  //     pdf.getPage(1).then(function (page) {
+  //       var scale = ratio;
+  //       var viewport = page.getViewport({ scale: scale });
+  //       // Support HiDPI-screens.
+  //       var outputScale = window.devicePixelRatio || 1;
 
-        var canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
-        var context = canvas.getContext("2d");
+  //       var canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+  //       var context = canvas.getContext("2d");
 
-        canvas.width = Math.floor(viewport.width * outputScale);
-        canvas.height = Math.floor(viewport.height * outputScale);
-        canvas.style.width = Math.floor(viewport.width) + "px";
-        canvas.style.height = Math.floor(viewport.height) + "px";
+  //       canvas.width = Math.floor(viewport.width * outputScale);
+  //       canvas.height = Math.floor(viewport.height * outputScale);
+  //       canvas.style.width = Math.floor(viewport.width) + "px";
+  //       canvas.style.height = Math.floor(viewport.height) + "px";
 
-        var transform =
-          outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+  //       var transform =
+  //         outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
 
-        var renderContext = {
-          canvasContext: context,
-          transform: transform,
-          viewport: viewport,
-        };
-        page.render(renderContext);
-      });
-    });
+  //       var renderContext = {
+  //         canvasContext: context,
+  //         transform: transform,
+  //         viewport: viewport,
+  //       };
+  //       page.render(renderContext);
+  //     });
+  //   });
 
-    if (triggerDownload) {
-      var link = document.createElement("a"); // Or maybe get it from the current document
-      link.href = blobUrl;
-      link.download = "aDefaultFileName.pdf";
-      document.body.appendChild(link); // Or append it whereever you want
-      link.click();
-    }
-  });
+  //   if (triggerDownload) {
+  //     var link = document.createElement("a"); // Or maybe get it from the current document
+  //     link.href = blobUrl;
+  //     link.download = "aDefaultFileName.pdf";
+  //     document.body.appendChild(link); // Or append it whereever you want
+  //     link.click();
+  //   }
+  // });
 };
