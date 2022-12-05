@@ -20,7 +20,7 @@ export const personalInformationSlice = {
     firstName: {
       type: "text",
       title: "First Name",
-      value: "Josefin",
+      value: "Vardan",
     },
     lastName: {
       type: "text",

@@ -90,9 +90,7 @@ export const updateResume = async (
   // const blobUrl = URL.createObjectURL(blob);
 
   pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-  const loadingTask = pdfjsLib.getDocument(
-    `http://localhost:3000/viewPdf/${resumeId}`
-  );
+  const loadingTask = pdfjsLib.getDocument(`/viewPdf/${resumeId}`);
   const pdf = await loadingTask.promise;
   const page = await pdf.getPage(1);
   let scale = ratio;
