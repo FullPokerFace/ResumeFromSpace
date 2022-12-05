@@ -6,7 +6,7 @@ import path from 'path';
 import pdfMakePrinter from 'pdfmake';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: "./.env" });
 
 
 const dev = process.env.NODE_ENV !== "production";
