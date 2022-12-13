@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import formSlice from "./slices/formSlice";
+import appSlice from "./slices/appSlice";
 import {
   useDispatch as useDispatchBase,
   useSelector as useSelectorBase,
@@ -11,6 +12,7 @@ import {
 export const store = configureStore({
   reducer: {
     form: formSlice,
+    app: appSlice,
   },
 });
 

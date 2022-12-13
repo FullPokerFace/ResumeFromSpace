@@ -171,3 +171,10 @@ export const updateResume = async (
   //   }
   // });
 };
+
+export const getRatio = (width, fullWidth) => {
+  if (width < fullWidth) {
+    return Number((+width / fullWidth).toFixed(3));
+  }
+  return 1;
+};

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import Breeze from "./resumesCollection/Breeze/Breeze";
-import { updateResume } from "./utils/resumeUtils";
+import { getRatio, updateResume } from "./utils/resumeUtils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getFormState,
@@ -18,7 +18,12 @@ let resizeInTimeout: any = null;
 const LetterSizeWidth = 850;
 const LetterSizeHeight = 1100;
 
-const ResumePreview = () => {
+interface Props {
+  id: string;
+}
+
+const ResumePreview: FC<Props> = (props) => {
+  const { id } = props || {};
   const [componentWidth, setComponentWidth] = useState(0);
 
   const resumePreviewRef = useRef<HTMLDivElement>(null);
@@ -27,13 +32,6 @@ const ResumePreview = () => {
   const { sections, colors, updateIn, resizeIn, isPreviewLoading } =
     useSelector(getFormState);
   const dispatch = useDispatch();
-
-  const getRatio = () => {
-    if (componentWidth < LetterSizeWidth) {
-      return Number((+componentWidth / LetterSizeWidth).toFixed(3));
-    }
-    return 1;
-  };
 
   const handleDownload = async () => {
     const content = await generateBreezeContent(sections);
@@ -46,16 +44,16 @@ const ResumePreview = () => {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({ content, styles }),
+      body: JSON.stringify({ content, styles, id }),
     };
-    const response = await fetch("/renderPDF", options);
+    const response = await fetch("/updatePDF", options);
     const result = await response.json();
     await updateResume(
       sections,
       content,
       colors,
       true,
-      getRatio(),
+      getRatio(componentWidth, LetterSizeWidth),
       result.insertedId
     );
   };
@@ -71,18 +69,19 @@ const ResumePreview = () => {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({ content, styles }),
+      body: JSON.stringify({ content, styles, id }),
     };
-    const response = await fetch("/renderPDF", options);
+    const response = await fetch("/updatePDF", options);
     const result = await response.json();
+    console.log(result);
 
     await updateResume(
       sections,
       content,
       colors,
       false,
-      getRatio(),
-      result.insertedId
+      getRatio(componentWidth, LetterSizeWidth),
+      id
     );
     setTimeout(() => {
       dispatch(setIsPreviewLoading(false));

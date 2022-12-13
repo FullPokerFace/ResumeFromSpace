@@ -66,17 +66,34 @@ const generateDocDefinition = (
       });
   });
 
-    server.post("/renderPDF", (request, response) => {
-      let db_connect = dbo.getDb();
-      let myobj = {
-        content: request.body.content,
-        styles: request.body.styles,
-      };
-      db_connect.collection("userResumes").insertOne(myobj, function (err, res) {
-        if (err) throw err;
-        response.json(res);
-      });
+  server.get("/getNewPDFId", (request, response) => {
+    let db_connect = dbo.getDb();
+    let myobj = {
+      content: {},
+      styles: {},
+    };
+    db_connect.collection("userResumes").insertOne(myobj, function (err, res) {
+      if (err) throw err;
+      response.json(res);
     });
+  });
+
+    server.route("/updatePDF").post(function (request, response) {
+      let db_connect = dbo.getDb();
+      let myquery = { _id: ObjectId(request.body.id) };
+      let newvalues = {
+        $set: {
+          content: request.body.content,
+          styles: request.body.styles,
+        },
+      };
+      db_connect
+        .collection("userResumes")
+        .updateOne(myquery, newvalues, function (err, res) {
+          if (err) throw err;
+          response.json({res});
+        });
+     });
 
 
     server.get("/viewPdf/:id", (request, response) => {
