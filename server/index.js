@@ -85,6 +85,7 @@ const generateDocDefinition = (
         $set: {
           content: request.body.content,
           styles: request.body.styles,
+          sections: request.body.sections,
         },
       };
       db_connect
@@ -94,7 +95,6 @@ const generateDocDefinition = (
           response.json({res});
         });
      });
-
 
     server.get("/viewPdf/:id", (request, response) => {
       let db_connect = dbo.getDb();
@@ -123,6 +123,18 @@ const generateDocDefinition = (
           doc.end()
         });
     });
+
+    server.get("/getResumeFormData/:id", (request, response) => {
+      let db_connect = dbo.getDb();
+      let myquery = { _id: ObjectId(request.params.id) };
+      db_connect
+        .collection("userResumes")
+        .findOne(myquery, function (err, record) {
+          if (err) throw err;
+          response.json(record.sections)
+        });
+    });
+
     server.all("*", (req, res) => {
       return handle(req, res);
     });

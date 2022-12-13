@@ -177,13 +177,13 @@ export const openResumeInNewPage = (resumeId) => {
   open(`/viewPdf/${resumeId}`, "_blank");
 };
 
-export const updateResumeOnServer = async (content, styles, id) => {
+export const updateResumeOnServer = async (content, styles, id, sections) => {
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },
-    body: JSON.stringify({ content, styles, id }),
+    body: JSON.stringify({ content, styles, id, sections }),
   };
   await fetch("/updatePDF", options);
 };

@@ -5,6 +5,7 @@ import Form from "../components/Form/Form";
 import Header from "../components/Header/Header";
 import ResumePreview from "../components/ResumePreview/ResumePreview";
 import { getAppState, setCurrentResume } from "../store/slices/appSlice";
+import { rehydrateFormData } from "../store/slices/formSlice";
 import styles from "../styles/Home.module.css";
 
 const generateNewResumeId = async () => {
@@ -25,20 +26,18 @@ const Create = () => {
 
   useGenerateNewId(dispatch, resumeId);
 
+  if (!resumeId) return;
+
   return (
-    <>
-      {resumeId && (
-        <div className={styles.container}>
-          <main className="container flex flex-col mx-auto p-4 min-h-screen">
-            <Header />
-            <div className="flex flex-col md:flex-row gap-8 flex-1 mt-16">
-              <Form />
-              <ResumePreview id={resumeId} />
-            </div>
-          </main>
+    <div className={styles.container}>
+      <main className="container flex flex-col mx-auto p-4 min-h-screen">
+        <Header />
+        <div className="flex flex-col md:flex-row gap-8 flex-1 mt-16">
+          <Form />
+          <ResumePreview id={resumeId} />
         </div>
-      )}
-    </>
+      </main>
+    </div>
   );
 };
 
@@ -49,9 +48,20 @@ const useGenerateNewId = (dispatch, resumeId) => {
     const generateId = async () => {
       const id = await generateNewResumeId();
       dispatch(setCurrentResume(String(id)));
-      document.cookie = String(id);
+      document.cookie = `resume=${String(id)}`;
+    };
+    const getRehydrateData = async (id: string) => {
+      const response = await fetch(`getResumeFormData/${id}`);
+      const sections = await response.json();
+      dispatch(rehydrateFormData({ ...sections }));
+      dispatch(setCurrentResume(String(id)));
     };
     if (resumeId === null) {
+      const hasStoredId = document?.cookie?.split("=")?.[1];
+      if (hasStoredId) {
+        getRehydrateData(hasStoredId);
+        return;
+      }
       generateId();
     }
   }, []);

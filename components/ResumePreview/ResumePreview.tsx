@@ -45,7 +45,7 @@ const ResumePreview: FC<Props> = (props) => {
     const ratio = getRatio(componentWidth, LetterSizeWidth);
     const styles = generateStyles({ primaryColor, secondaryColor });
 
-    await updateResumeOnServer(content, styles, id);
+    await updateResumeOnServer(content, styles, id, sections);
     await updateResumeOnPage(sections, content, colors, ratio);
 
     openResumeInNewPage(id);
@@ -56,7 +56,7 @@ const ResumePreview: FC<Props> = (props) => {
     const ratio = getRatio(componentWidth, LetterSizeWidth);
     const styles = generateStyles({ primaryColor, secondaryColor });
 
-    updateResumeOnServer(content, styles, id);
+    updateResumeOnServer(content, styles, id, sections);
     await updateResumeOnPage(sections, content, colors, ratio);
 
     setTimeout(() => {

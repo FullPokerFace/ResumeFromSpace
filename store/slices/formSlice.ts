@@ -127,6 +127,12 @@ export const formSlice = createSlice({
     ) => {
       state.isPreviewLoading = action.payload;
     },
+    rehydrateFormData: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<Sections>
+    ) => {
+      state.sections = action.payload;
+    },
   },
 });
 
@@ -140,6 +146,7 @@ export const {
   setUpdateIn,
   setIsPreviewLoading,
   setResizeIn,
+  rehydrateFormData
 } = formSlice.actions;
 
 export default formSlice.reducer;

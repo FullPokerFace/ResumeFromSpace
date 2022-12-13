@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-const navMenu = [{ title: "My Resumes" }, { title: "User" }];
+const navMenu = [
+  { title: "Create" },
+  { title: "My Resumes" },
+  { title: "User" },
+];
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
