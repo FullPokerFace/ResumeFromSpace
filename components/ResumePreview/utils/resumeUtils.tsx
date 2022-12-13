@@ -17,7 +17,7 @@ export const generatePDF = async (
   } = sections || {};
 
   const fontUrl = window.location.origin;
-  const bgImage = await imageToDataUrl(backgroundImage.src, 850, 1100);
+  // const bgImage = await imageToDataUrl(backgroundImage.src, 850, 1100);
   let docDefinition = {
     compress: false,
     content: content,
@@ -67,60 +67,54 @@ const imageToDataUrl = async (src, width, height) => {
   return tmpCanvas.toDataURL();
 };
 
-export const updateResume = async (
+export const updateResumeOnPage = async (
   sections,
   content,
   colors,
-  triggerDownload = false,
-  ratio = 1,
-  resumeId
+  ratio = 1
 ) => {
-  // const docDef = await generatePDF(sections, content, colors);
-  // const pdfDocGenerator = (pdfMake as any).createPdf(docDef);
-  // const fontUrl = window.location.origin;
-  // (pdfDocGenerator as any).fonts = {
-  //   Montserrat: {
-  //     normal: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-  //     // bolditalics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-  //     // italics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-  //     bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
-  //   },
-  // };
-  // await pdfDocGenerator.getBlob(async (blob) => {
-  // const blobUrl = URL.createObjectURL(blob);
-
-  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-  const loadingTask = pdfjsLib.getDocument(`/viewPdf/${resumeId}`);
-  const pdf = await loadingTask.promise;
-  const page = await pdf.getPage(1);
-  let scale = ratio;
-  let viewport = page.getViewport({ scale: scale });
-  // Support HiDPI-screens.
-  let outputScale = window.devicePixelRatio || 1;
-
-  let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
-  let context = canvas.getContext("2d");
-  console.log("loaded");
-
-  canvas.width = Math.floor(viewport.width * outputScale);
-  canvas.height = Math.floor(viewport.height * outputScale);
-  canvas.style.width = Math.floor(viewport.width) + "px";
-  canvas.style.height = Math.floor(viewport.height) + "px";
-
-  let transform =
-    outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-
-  let renderContext = {
-    canvasContext: context,
-    transform: transform,
-    viewport: viewport,
+  const docDef = await generatePDF(sections, content, colors);
+  const pdfDocGenerator = (pdfMake as any).createPdf(docDef);
+  const fontUrl = window.location.origin;
+  (pdfDocGenerator as any).fonts = {
+    Montserrat: {
+      normal: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+      // bolditalics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+      // italics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+      bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
+    },
   };
-  await page.render(renderContext);
+  await pdfDocGenerator.getBlob(async (blob) => {
+    const blobUrl = URL.createObjectURL(blob);
 
-  if (triggerDownload) {
-    open(`/viewPdf/${resumeId}`, "_blank");
-  }
-  // });
+    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+    const loadingTask = pdfjsLib.getDocument(blobUrl);
+    const pdf = await loadingTask.promise;
+    const page = await pdf.getPage(1);
+    let scale = ratio;
+    let viewport = page.getViewport({ scale: scale });
+    // Support HiDPI-screens.
+    let outputScale = window.devicePixelRatio || 1;
+
+    let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+    let context = canvas.getContext("2d");
+    console.log("loaded");
+
+    canvas.width = Math.floor(viewport.width * outputScale);
+    canvas.height = Math.floor(viewport.height * outputScale);
+    canvas.style.width = Math.floor(viewport.width) + "px";
+    canvas.style.height = Math.floor(viewport.height) + "px";
+
+    let transform =
+      outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+
+    let renderContext = {
+      canvasContext: context,
+      transform: transform,
+      viewport: viewport,
+    };
+    await page.render(renderContext);
+  });
   return;
 
   // const response = await fetch("http://localhost:4000/renderPDF", {
@@ -177,4 +171,19 @@ export const getRatio = (width, fullWidth) => {
     return Number((+width / fullWidth).toFixed(3));
   }
   return 1;
+};
+
+export const openResumeInNewPage = (resumeId) => {
+  open(`/viewPdf/${resumeId}`, "_blank");
+};
+
+export const updateResumeOnServer = async (content, styles, id) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({ content, styles, id }),
+  };
+  await fetch("/updatePDF", options);
 };
