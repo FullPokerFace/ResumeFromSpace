@@ -5,8 +5,10 @@ import Nav from "./common/Nav";
 
 const Header = () => {
   return (
-    <div className="flex justify-between content-center">
-      <Image src={headerLogo} alt="ResumeFromSpace logo"></Image>
+    <div className="flex justify-between content-center gap-2">
+      <a href="/">
+        <Image src={headerLogo} alt="ResumeFromSpace logo"></Image>
+      </a>
       <Nav />
     </div>
   );

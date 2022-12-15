@@ -29,15 +29,10 @@ const Create = () => {
   if (!resumeId) return;
 
   return (
-    <div className={styles.container}>
-      <main className="container flex flex-col mx-auto p-4 min-h-screen overflow-hidden">
-        <Header />
-        <div className="flex flex-col md:flex-row gap-8 flex-1 mt-16">
-          <Form />
-          <ResumePreview id={resumeId} />
-        </div>
-      </main>
-    </div>
+    <>
+      <Form />
+      <ResumePreview id={resumeId} />
+    </>
   );
 };
 

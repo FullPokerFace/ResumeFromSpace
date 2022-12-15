@@ -1,22 +1,31 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 const navMenu = [
-  { title: "Create" },
-  { title: "My Resumes" },
-  { title: "User" },
+  { title: "Create", link: "/create" },
+  { title: "My Resumes", link: "/myresumes" },
+  { title: "User", link: "/user" },
 ];
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const isThisPage = (link) => router?.pathname === link;
   return (
     <>
-      <ul className="md:flex gap-4 hidden">
+      <ul className="md:flex gap-4 hidden items-center">
         {navMenu &&
           navMenu.length > 0 &&
-          navMenu.map(({ title }) => (
-            <button className="text-slate-800 font-semibold" key={title}>
+          navMenu.map(({ title, link }) => (
+            <a
+              href={link}
+              className={`text-slate-800 font-semibold border-b-2 ${
+                isThisPage(link) ? "border-slate-800" : "border-transparent"
+              } hover:border-slate-800`}
+              key={title}
+            >
               {title}
-            </button>
+            </a>
           ))}
       </ul>
       <button className="md:hidden" onClick={() => setIsOpen(true)}>
@@ -35,10 +44,14 @@ const Nav = () => {
         </button>
         {navMenu &&
           navMenu.length > 0 &&
-          navMenu.map(({ title }) => (
-            <button className="text-white font-semibold min-w-max" key={title}>
+          navMenu.map(({ title, link }) => (
+            <a
+              href={link}
+              className="text-white font-semibold min-w-max"
+              key={title}
+            >
               {title}
-            </button>
+            </a>
           ))}
       </ul>
     </>

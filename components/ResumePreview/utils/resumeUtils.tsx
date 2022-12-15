@@ -98,7 +98,6 @@ export const updateResumeOnPage = async (
 
     let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
     let context = canvas.getContext("2d");
-    console.log("loaded");
 
     canvas.width = Math.floor(viewport.width * outputScale);
     canvas.height = Math.floor(viewport.height * outputScale);
