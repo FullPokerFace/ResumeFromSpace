@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import headerLogo from "./assets/headerLogo.svg";
+import headerLogo from "../../assets/headerLogo.svg";
 import Nav from "./common/Nav";
 
 const Header = () => {
