@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-
-const navMenu = [
-  { title: "Create", link: "/create" },
-  { title: "My Resumes", link: "/myresumes" },
-  { title: "User", link: "/user" },
-];
+import { useSelector } from "react-redux";
+import { getAppState } from "../../../store/slices/appSlice";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const { user } = useSelector(getAppState);
+
+  const navMenu = [
+    { title: "Create", link: "/create" },
+    { title: "My Resumes", link: "/myresumes" },
+    { title: (user as any)?.email, link: "/user" },
+  ];
+
   const isThisPage = (link) => router?.pathname === link;
   return (
     <>

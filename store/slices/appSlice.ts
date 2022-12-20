@@ -3,15 +3,18 @@ import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
 interface AppState {
     resumeId: null | string;
     error: null | object;
+    user: null | object;
 }
 
 const initialState: AppState = {
     resumeId: null,
     error: null,
+    user: null,
 };
 
 type setResumeId = string
 type setError = null | object
+type setUser = null | object
 
 /**
  * Create a slice as a reducer containing actions.
@@ -34,6 +37,12 @@ export const appSlice = createSlice({
       action: PayloadAction<setError>
     ) => {
         state.error = action.payload;
+    },
+    setUser: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<setUser>
+    ) => {
+        state.user = action.payload;
     }
   },
 });
@@ -44,7 +53,8 @@ export const getAppState = (state: { app: AppState }) => state.app;
 // Exports all actions
 export const {
     setCurrentResume,
-    setError
+    setError,
+    setUser
 } = appSlice.actions;
 
 export default appSlice.reducer;

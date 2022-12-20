@@ -4,14 +4,15 @@ import { TextInput } from "../components/Form/common/TextInput";
 import loginLogo from "../assets/loginLogo.svg";
 import { useState } from "react";
 import Router from "next/router";
-import { setError } from "../store/slices/appSlice";
-import { useDispatch } from "react-redux";
+import { getAppState, setError, setUser } from "../store/slices/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
   const dispatch = useDispatch();
+  const { user } = useSelector(getAppState);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -30,7 +31,9 @@ const Home: NextPage = () => {
     try {
       const response = await fetch("/login", options);
       if (response.ok) {
-        Router.push("/create");
+        const user = await response.json();
+        // Router.push("/create");
+        dispatch(setUser({ ...user }));
       } else {
         dispatch(setError({ message: "User not found" }));
       }
@@ -39,20 +42,43 @@ const Home: NextPage = () => {
     }
   };
 
+  const handleStartNewResumeClick = () => {
+    Router.push("/create");
+  };
+
   return (
     <div className="flex flex-col md:flex-row justify-center items-center m-auto">
       <div className="w-full flex justify-center md:justify-end">
         <Image src={loginLogo} alt="Login"></Image>
       </div>
       <div className="p-8 flex flex-col justify-center gap-4 w-full max-w-xs m-auto">
-        <TextInput value={email} title="Email" onChange={handleEmailChange} />
-        <TextInput value={pass} title="Password" onChange={handlePassChange} />
         <button
-          onClick={handleLoginClick}
+          onClick={handleStartNewResumeClick}
           className="bg-slate-800 px-4 py-2 rounded-md text-white relative hover:bg-slate-600"
         >
-          Login
+          Start New Resume
         </button>
+        {!user && (
+          <>
+            <hr />
+            <TextInput
+              value={email}
+              title="Email"
+              onChange={handleEmailChange}
+            />
+            <TextInput
+              value={pass}
+              title="Password"
+              onChange={handlePassChange}
+            />
+            <button
+              onClick={handleLoginClick}
+              className="bg-slate-800 px-4 py-2 rounded-md text-white relative hover:bg-slate-600"
+            >
+              Login
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
