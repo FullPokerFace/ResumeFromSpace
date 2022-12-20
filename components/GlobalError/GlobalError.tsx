@@ -9,11 +9,13 @@ const GlobalError = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setError(null));
-    document.addEventListener("click", () => {
-      handleErrorCloseClick();
-    });
-  }, []);
+    if (error) {
+      document.addEventListener("click", handleErrorCloseClick);
+    }
+    return () => {
+      document.removeEventListener("click", handleErrorCloseClick);
+    };
+  }, [error]);
 
   const handleErrorCloseClick = () => {
     if (!isClosing) {
