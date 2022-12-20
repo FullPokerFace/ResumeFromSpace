@@ -63,7 +63,7 @@ const startServer = async () => {
         .collection("users")
         .findOne(myquery, function (err, record) {
           if (err) throw err;
-          if (record === null) { response.send(404).json({message: 'User not found'})} 
+          if (record === null) { response.status(404).send(); return} 
           response.json(record)
         });
     });

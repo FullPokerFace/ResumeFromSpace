@@ -4,11 +4,15 @@ import { TextInput } from "../components/Form/common/TextInput";
 import loginLogo from "../assets/loginLogo.svg";
 import { useState } from "react";
 import Router from "next/router";
+import { setError } from "../store/slices/appSlice";
+import { useDispatch } from "react-redux";
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  // const [error, setError] = useState("");
+
+  const dispatch = useDispatch();
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -25,10 +29,13 @@ const Home: NextPage = () => {
     };
     try {
       const response = await fetch("/login", options);
-      const result = await response.json();
-      if (result) Router.push("/create");
+      if (response.ok) {
+        Router.push("/create");
+      } else {
+        dispatch(setError({ message: "User not found" }));
+      }
     } catch (error) {
-      console.log(error);
+      dispatch(setError({ message: "Server error" }));
     }
   };
 
