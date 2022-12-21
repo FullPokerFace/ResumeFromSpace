@@ -2,11 +2,13 @@ import type { NextPage } from "next";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Form from "../components/Form/Form";
-import Header from "../components/Header/Header";
 import ResumePreview from "../components/ResumePreview/ResumePreview";
-import { getAppState, setCurrentResume } from "../store/slices/appSlice";
+import {
+  getAppState,
+  setCurrentResume,
+  setIsLoading,
+} from "../store/slices/appSlice";
 import { rehydrateFormData } from "../store/slices/formSlice";
-import styles from "../styles/Home.module.css";
 
 const generateNewResumeId = async () => {
   const options = {
@@ -46,10 +48,12 @@ const useGenerateNewId = (dispatch, resumeId) => {
       document.cookie = `resume=${String(id)}`;
     };
     const getRehydrateData = async (id: string) => {
+      dispatch(setIsLoading(true));
       const response = await fetch(`getResumeFormData/${id}`);
       const sections = await response.json();
       dispatch(rehydrateFormData({ ...sections }));
       dispatch(setCurrentResume(String(id)));
+      dispatch(setIsLoading(false));
     };
     if (resumeId === null) {
       const hasStoredId = document?.cookie?.split("=")?.[1];

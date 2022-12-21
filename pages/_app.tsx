@@ -6,6 +6,7 @@ import { store } from "../store/store";
 import Head from "next/head";
 import Header from "../components/Header/Header";
 import GlobalError from "../components/GlobalError/GlobalError";
+import Loader from "../components/Loader/Loader";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <main className="container flex flex-col mx-auto p-4 min-h-screen overflow-hidden">
           <Header />
           <GlobalError />
+          <Loader />
           <div className="flex flex-col md:flex-row gap-8 flex-1 mt-16">
             <Component {...pageProps} />
           </div>

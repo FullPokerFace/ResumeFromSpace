@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { getAppState } from "../../../store/slices/appSlice";
+import Link from "next/link";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,25 +12,27 @@ const Nav = () => {
   const navMenu = [
     { title: "Create", link: "/create" },
     { title: "My Resumes", link: "/myresumes" },
-    { title: (user as any)?.email, link: "/user" },
   ];
 
-  const isThisPage = (link) => router?.pathname === link;
+  if ((user as any)?.email)
+    navMenu.push({ title: (user as any)?.email, link: "/user" });
+
+  const isThisPage = (link: string) => router?.pathname === link;
   return (
     <>
       <ul className="md:flex gap-4 hidden items-center">
         {navMenu &&
           navMenu.length > 0 &&
           navMenu.map(({ title, link }) => (
-            <a
+            <Link
+              key={link}
               href={link}
               className={`text-slate-800 font-semibold border-b-2 ${
                 isThisPage(link) ? "border-slate-800" : "border-transparent"
               } hover:border-slate-800`}
-              key={title}
             >
               {title}
-            </a>
+            </Link>
           ))}
       </ul>
       <button className="md:hidden" onClick={() => setIsOpen(true)}>
