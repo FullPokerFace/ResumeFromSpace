@@ -43,9 +43,11 @@ export default Create;
 const useGenerateNewId = (dispatch, resumeId) => {
   useEffect(() => {
     const generateId = async () => {
+      dispatch(setIsLoading(true));
       const id = await generateNewResumeId();
       dispatch(setCurrentResume(String(id)));
       document.cookie = `resume=${String(id)}`;
+      dispatch(setIsLoading(false));
     };
     const getRehydrateData = async (id: string) => {
       dispatch(setIsLoading(true));

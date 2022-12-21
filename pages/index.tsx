@@ -17,8 +17,8 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center m-auto">
-      <div className="w-full flex justify-center md:justify-end">
+    <div className="flex flex-col md:flex-row justify-center items-center m-auto ">
+      <div className="w-full flex justify-center md:justify-end animate-fly">
         <Image src={loginLogo} alt="Login"></Image>
       </div>
       <div className="p-8 flex flex-col justify-center gap-4 w-full max-w-xs m-auto">
