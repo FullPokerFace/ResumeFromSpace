@@ -64,7 +64,7 @@ const startServer = async () => {
         .findOne(myquery, function (err, record) {
           if (err) throw err;
           if (record === null) { response.status(404).send(); return} 
-          response.json(record)
+          response.json({email: record.email, _id: record._id})
         });
     });
 

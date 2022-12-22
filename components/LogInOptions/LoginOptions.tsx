@@ -8,6 +8,8 @@ const LoginOptions = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
+  const dispatch = useDispatch();
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -15,7 +17,10 @@ const LoginOptions = () => {
     setPass(e.target.value);
   };
 
-  const dispatch = useDispatch();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLoginClick;
+  };
 
   const handleLoginClick = async () => {
     const options = {
@@ -30,6 +35,7 @@ const LoginOptions = () => {
       const response = await fetch("/login", options);
       if (response.ok) {
         const user = await response.json();
+        document.cookie = `user=${String(JSON.stringify(user))}`;
         dispatch(setUser({ ...user }));
       } else {
         dispatch(setError({ message: "User not found" }));
@@ -41,12 +47,27 @@ const LoginOptions = () => {
   };
 
   return (
-    <>
+    <form
+      className="flex flex-col justify-center gap-4 w-full max-w-xs "
+      onSubmit={handleSubmit}
+    >
       <hr />
-      <TextInput value={email} title="Email" onChange={handleEmailChange} />
-      <TextInput value={pass} title="Password" onChange={handlePassChange} />
+      <TextInput
+        value={email}
+        placeholder="Email"
+        type="email"
+        title=""
+        onChange={handleEmailChange}
+      />
+      <TextInput
+        value={pass}
+        placeholder="Password"
+        type="password"
+        title=""
+        onChange={handlePassChange}
+      />
       <PrimaryButton label="Login" onClick={handleLoginClick} />
-    </>
+    </form>
   );
 };
 

@@ -58,9 +58,11 @@ const useGenerateNewId = (dispatch, resumeId) => {
       dispatch(setIsLoading(false));
     };
     if (resumeId === null) {
-      const hasStoredId = document?.cookie?.split("=")?.[1];
-      if (hasStoredId) {
-        getRehydrateData(hasStoredId);
+      const hasStoredResumeId = document?.cookie
+        ?.split("; ")?.[0]
+        ?.split("=")[1];
+      if (hasStoredResumeId) {
+        getRehydrateData(hasStoredResumeId);
         return;
       }
       generateId();

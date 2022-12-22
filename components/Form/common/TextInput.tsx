@@ -4,12 +4,15 @@ export const TextInput = ({
   autoComplete,
   onChange,
   className = "",
+  placeholder = "",
+  type = "text",
 }: any) => (
-  <label htmlFor={title} className="flex flex-col font-thin gap-y-2">
+  <label htmlFor={title} className="flex flex-col font-thin ">
     {title}
     <input
       autoComplete={autoComplete}
-      type="text"
+      placeholder={placeholder}
+      type={type}
       id={title}
       value={value}
       className={`p-2 border-b font-normal border-slate-400 focus:outline-0 ${className}`}

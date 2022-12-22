@@ -18,6 +18,7 @@ type setResumeId = string
 type setError = null | object
 type setUser = null | object
 type setIsLoading = boolean
+type setAppData = AppState
 
 /**
  * Create a slice as a reducer containing actions.
@@ -52,6 +53,12 @@ export const appSlice = createSlice({
       action: PayloadAction<setIsLoading>
     ) => {
         state.isLoading = action.payload;
+    },
+    setAppData: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<setAppData>
+    ) => {
+        state = action.payload;
     }
   },
 });
@@ -64,7 +71,8 @@ export const {
     setCurrentResume,
     setError,
     setUser,
-    setIsLoading
+    setIsLoading,
+    setAppData
 } = appSlice.actions;
 
 export default appSlice.reducer;
