@@ -98,6 +98,7 @@ const startServer = async () => {
       let myquery = { _id: ObjectId(request.body.id) };
       let newvalues = {
         $set: {
+          thumbnail: request.body.thumbnail,
           content: request.body.content,
           styles: request.body.styles,
           sections: request.body.sections,
@@ -146,6 +147,7 @@ const startServer = async () => {
         .collection("userResumes")
         .findOne(myquery, function (err, record) {
           if (err) throw err;
+          if (record === null) { response.status(404).send(); return} 
           response.json(record.sections)
         });
     });

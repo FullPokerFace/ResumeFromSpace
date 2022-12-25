@@ -50,12 +50,16 @@ const useGenerateNewId = (dispatch, resumeId) => {
       dispatch(setIsLoading(false));
     };
     const getRehydrateData = async (id: string) => {
-      dispatch(setIsLoading(true));
-      const response = await fetch(`getResumeFormData/${id}`);
-      const sections = await response.json();
-      dispatch(rehydrateFormData({ ...sections }));
-      dispatch(setCurrentResume(String(id)));
-      dispatch(setIsLoading(false));
+      try {
+        dispatch(setIsLoading(true));
+        const response = await fetch(`getResumeFormData/${id}`);
+        const sections = await response.json();
+        dispatch(rehydrateFormData({ ...sections }));
+        dispatch(setCurrentResume(String(id)));
+        dispatch(setIsLoading(false));
+      } catch (error) {
+        generateId();
+      }
     };
     if (resumeId === null) {
       const hasStoredResumeId = document?.cookie

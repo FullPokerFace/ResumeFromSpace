@@ -115,7 +115,6 @@ export const updateResumeOnPage = async (
     await page.render(renderContext);
   });
   return;
-
   // const response = await fetch("http://localhost:4000/renderPDF", {
   //   method: "POST",
   //   headers: {
@@ -177,12 +176,19 @@ export const openResumeInNewPage = (resumeId) => {
 };
 
 export const updateResumeOnServer = async (content, styles, id, sections) => {
+  let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },
-    body: JSON.stringify({ content, styles, id, sections }),
+    body: JSON.stringify({
+      content,
+      styles,
+      id,
+      sections,
+      thumbnail: canvas.toDataURL("png"),
+    }),
   };
   await fetch("/updatePDF", options);
 };
