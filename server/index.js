@@ -113,6 +113,35 @@ const startServer = async () => {
         });
     });
 
+    server.route("/updateThumbnail").post(function (request, response) {
+      let db_connect = dbo.getDb();
+      let myquery = { resumeId: request.body.id };
+      let newvalues = {
+        $set: {
+          thumbnail: request.body.thumbnail,
+          userID: request.body.userID,
+          resumeId: request.body.id,
+        },
+      };
+      db_connect
+        .collection("resumeThumbnails")
+        .updateOne(myquery, newvalues, { upsert: true }, function (err, res) {
+          if (err) throw err;
+          response.json({res});
+        });
+    });
+
+    server.route("/allThumbs").post(function (request, response) {
+      let db_connect = dbo.getDb("ResumeFromSpace");
+      db_connect
+      .collection("resumeThumbnails")
+      .find({})
+      .toArray(function (err, result) {
+        if (err) throw err;
+        response.json(result);
+      });
+    });
+
     server.get("/viewPdf/:id", (request, response) => {
       let db_connect = dbo.getDb();
       let myquery = { _id: ObjectId(request.params.id) };

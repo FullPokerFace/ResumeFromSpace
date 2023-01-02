@@ -4,6 +4,7 @@ import backgroundImage from "../resumesCollection/Breeze/resumeBack.png";
 import { Colors, Sections } from "../../../store/slices/formSlice";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+import { isEmptyObject } from "./_commonUtils";
 
 export const generatePDF = async (
   sections: Sections,
@@ -71,7 +72,8 @@ export const updateResumeOnPage = async (
   sections,
   content,
   colors,
-  ratio = 1
+  ratio = 1,
+  callBack
 ) => {
   const docDef = await generatePDF(sections, content, colors);
   const pdfDocGenerator = (pdfMake as any).createPdf(docDef);
@@ -112,9 +114,10 @@ export const updateResumeOnPage = async (
       transform: transform,
       viewport: viewport,
     };
-    await page.render(renderContext);
+    page.render(renderContext).promise.then(function () {
+      callBack();
+    });
   });
-  return;
   // const response = await fetch("http://localhost:4000/renderPDF", {
   //   method: "POST",
   //   headers: {
@@ -182,7 +185,6 @@ export const updateResumeOnServer = async (
   sections,
   user
 ) => {
-  let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
   const options = {
     method: "POST",
     headers: {
@@ -193,9 +195,26 @@ export const updateResumeOnServer = async (
       styles,
       id,
       sections,
-      thumbnail: canvas.toDataURL("png"),
       userID: user?._id,
     }),
   };
   await fetch("/updatePDF", options);
+};
+
+export const updateThumbnailOnServer = async (user, id) => {
+  if (!isEmptyObject(user)) {
+    let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({
+        id,
+        thumbnail: canvas.toDataURL(),
+        userID: user?._id,
+      }),
+    };
+    await fetch("/updateThumbnail", options);
+  }
 };

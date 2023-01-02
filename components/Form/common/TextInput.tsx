@@ -6,6 +6,7 @@ export const TextInput = ({
   className = "",
   placeholder = "",
   type = "text",
+  id = "",
 }: any) => (
   <label htmlFor={title} className="flex flex-col font-thin ">
     {title}
@@ -13,7 +14,7 @@ export const TextInput = ({
       autoComplete={autoComplete}
       placeholder={placeholder}
       type={type}
-      id={title}
+      id={title + id}
       value={value}
       className={`p-2 border-b font-normal border-slate-400 focus:outline-0 ${className}`}
       onChange={onChange}

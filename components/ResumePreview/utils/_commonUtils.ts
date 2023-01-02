@@ -8,3 +8,9 @@ export const getSavedCookieValue = (name) => {
   
     return allCookies.find((cookie) => cookie.name === name)?.value || "";
   };
+
+export const isEmptyObject = (obj) => 
+    obj
+    && Object.keys(obj).length === 0
+    && Object.getPrototypeOf(obj) === Object.prototype
+  ;

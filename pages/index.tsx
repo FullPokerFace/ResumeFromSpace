@@ -4,15 +4,25 @@ import { TextInput } from "../components/Form/common/TextInput";
 import loginLogo from "../assets/loginLogo.svg";
 import { useState } from "react";
 import Router from "next/router";
-import { getAppState } from "../store/slices/appSlice";
-import { useSelector } from "react-redux";
+import { getAppState, setCurrentResume } from "../store/slices/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../components/_common/PrimaryButton";
 import LoginOptions from "../components/LogInOptions/LoginOptions";
 
+var deleteCookie = (name) => {
+  document.cookie = name + "=";
+};
+
 const Home: NextPage = () => {
   const { user } = useSelector(getAppState);
+  const dispatch = useDispatch();
 
   const handleStartNewResumeClick = () => {
+    deleteCookie("resume");
+    dispatch(setCurrentResume(null));
+    Router.push("/create");
+  };
+  const handleContinueWorking = () => {
     Router.push("/create");
   };
 
@@ -22,6 +32,10 @@ const Home: NextPage = () => {
         <Image src={loginLogo} alt="Login"></Image>
       </div>
       <div className="p-8 flex flex-col justify-center gap-4 w-full max-w-xs m-auto">
+        <PrimaryButton
+          label="Continue working"
+          onClick={handleContinueWorking}
+        />
         <PrimaryButton
           label="Start New Resume"
           onClick={handleStartNewResumeClick}

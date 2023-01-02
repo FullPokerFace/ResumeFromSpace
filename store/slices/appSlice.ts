@@ -14,7 +14,7 @@ const initialState: AppState = {
     isLoading: false,
 };
 
-type setResumeId = string
+type setResumeId = string | null
 type setError = null | object
 type setUser = null | object
 type setIsLoading = boolean

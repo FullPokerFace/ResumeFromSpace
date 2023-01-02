@@ -133,6 +133,15 @@ export const formSlice = createSlice({
     ) => {
       state.sections = action.payload;
     },
+    setInitialFormData: (
+      state: Draft<typeof initialState>
+    ) => {
+      state.sections = {
+          personalInformation: personalInformationSlice,
+          phoneEmailWeb: phoneEmailWebSlice,
+          summary: summarySlice,
+      };
+    },
   },
 });
 
@@ -146,7 +155,8 @@ export const {
   setUpdateIn,
   setIsPreviewLoading,
   setResizeIn,
-  rehydrateFormData
+  rehydrateFormData,
+  setInitialFormData
 } = formSlice.actions;
 
 export default formSlice.reducer;

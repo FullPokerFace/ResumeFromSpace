@@ -9,7 +9,10 @@ import {
   setCurrentResume,
   setIsLoading,
 } from "../store/slices/appSlice";
-import { rehydrateFormData } from "../store/slices/formSlice";
+import {
+  rehydrateFormData,
+  setInitialFormData,
+} from "../store/slices/formSlice";
 
 const generateNewResumeId = async () => {
   const options = {
@@ -50,6 +53,7 @@ const useGenerateNewId = (dispatch, resumeId) => {
       document.cookie = `resume=${String(id)}`;
       dispatch(setIsLoading(false));
     };
+
     const getRehydrateData = async (id: string) => {
       try {
         dispatch(setIsLoading(true));
@@ -62,12 +66,14 @@ const useGenerateNewId = (dispatch, resumeId) => {
         generateId();
       }
     };
+
     if (resumeId === null) {
       const hasStoredResumeId = getSavedCookieValue("resume");
       if (hasStoredResumeId) {
         getRehydrateData(hasStoredResumeId);
         return;
       }
+      dispatch(setInitialFormData());
       generateId();
     }
   }, []);

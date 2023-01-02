@@ -56,15 +56,19 @@ const LoginOptions = () => {
         value={email}
         placeholder="Email"
         type="email"
+        id="email"
         title=""
         onChange={handleEmailChange}
+        autoComplete={"on"}
       />
       <TextInput
         value={pass}
         placeholder="Password"
         type="password"
+        id="password"
         title=""
         onChange={handlePassChange}
+        autoComplete={"on"}
       />
       <PrimaryButton label="Login" onClick={handleLoginClick} />
     </form>

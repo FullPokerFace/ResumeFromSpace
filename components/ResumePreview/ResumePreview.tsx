@@ -5,6 +5,7 @@ import {
   openResumeInNewPage,
   updateResumeOnPage,
   updateResumeOnServer,
+  updateThumbnailOnServer,
 } from "./utils/resumeUtils";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -48,9 +49,10 @@ const ResumePreview: FC<Props> = (props) => {
     const ratio = getRatio(componentWidth, LetterSizeWidth);
     const styles = generateStyles({ primaryColor, secondaryColor });
 
-    await updateResumeOnPage(sections, content, colors, ratio);
-    updateResumeOnServer(content, styles, id, sections, user);
-
+    await updateResumeOnPage(sections, content, colors, ratio, () =>
+      updateThumbnailOnServer(user, id)
+    );
+    await updateResumeOnServer(content, styles, id, sections, user);
     openResumeInNewPage(id);
   };
 
@@ -59,12 +61,14 @@ const ResumePreview: FC<Props> = (props) => {
     const ratio = getRatio(componentWidth, LetterSizeWidth);
     const styles = generateStyles({ primaryColor, secondaryColor });
 
-    await updateResumeOnPage(sections, content, colors, ratio);
-    updateResumeOnServer(content, styles, id, sections, user);
+    await updateResumeOnPage(sections, content, colors, ratio, () =>
+      updateThumbnailOnServer(user, id)
+    );
+    await updateResumeOnServer(content, styles, id, sections, user);
 
     setTimeout(() => {
       dispatch(setIsPreviewLoading(false));
-    }, 200);
+    }, 500);
   };
 
   useEffect(() => {
