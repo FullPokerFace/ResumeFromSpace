@@ -16,6 +16,7 @@ import {
 import { generateBreezeContent } from "./resumesCollection/Breeze/content";
 import { Loader } from "../_common/Loader";
 import generateStyles from "./resumesCollection/Breeze/styles";
+import { getAppState } from "../../store/slices/appSlice";
 
 let updateTimeout: any = null;
 let resizeInTimeout: any = null;
@@ -36,6 +37,8 @@ const ResumePreview: FC<Props> = (props) => {
 
   const { sections, colors, updateIn, resizeIn, isPreviewLoading } =
     useSelector(getFormState);
+  const { user } = useSelector(getAppState);
+
   const { primaryColor, secondaryColor } = colors || {};
 
   const dispatch = useDispatch();
@@ -46,7 +49,7 @@ const ResumePreview: FC<Props> = (props) => {
     const styles = generateStyles({ primaryColor, secondaryColor });
 
     await updateResumeOnPage(sections, content, colors, ratio);
-    updateResumeOnServer(content, styles, id, sections);
+    updateResumeOnServer(content, styles, id, sections, user);
 
     openResumeInNewPage(id);
   };
@@ -57,7 +60,7 @@ const ResumePreview: FC<Props> = (props) => {
     const styles = generateStyles({ primaryColor, secondaryColor });
 
     await updateResumeOnPage(sections, content, colors, ratio);
-    updateResumeOnServer(content, styles, id, sections);
+    updateResumeOnServer(content, styles, id, sections, user);
 
     setTimeout(() => {
       dispatch(setIsPreviewLoading(false));

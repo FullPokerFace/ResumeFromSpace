@@ -102,6 +102,7 @@ const startServer = async () => {
           content: request.body.content,
           styles: request.body.styles,
           sections: request.body.sections,
+          userID: request.body.userID,
         },
       };
       db_connect

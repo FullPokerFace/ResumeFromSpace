@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Form from "../components/Form/Form";
 import ResumePreview from "../components/ResumePreview/ResumePreview";
+import { getSavedCookieValue } from "../components/ResumePreview/utils/_commonUtils";
 import {
   getAppState,
   setCurrentResume,
@@ -62,9 +63,7 @@ const useGenerateNewId = (dispatch, resumeId) => {
       }
     };
     if (resumeId === null) {
-      const hasStoredResumeId = document?.cookie
-        ?.split("; ")?.[0]
-        ?.split("=")[1];
+      const hasStoredResumeId = getSavedCookieValue("resume");
       if (hasStoredResumeId) {
         getRehydrateData(hasStoredResumeId);
         return;

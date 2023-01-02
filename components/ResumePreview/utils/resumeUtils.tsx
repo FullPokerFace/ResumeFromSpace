@@ -175,7 +175,13 @@ export const openResumeInNewPage = (resumeId) => {
   open(`/viewPdf/${resumeId}`, "_blank");
 };
 
-export const updateResumeOnServer = async (content, styles, id, sections) => {
+export const updateResumeOnServer = async (
+  content,
+  styles,
+  id,
+  sections,
+  user
+) => {
   let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
   const options = {
     method: "POST",
@@ -188,6 +194,7 @@ export const updateResumeOnServer = async (content, styles, id, sections) => {
       id,
       sections,
       thumbnail: canvas.toDataURL("png"),
+      userID: user?._id,
     }),
   };
   await fetch("/updatePDF", options);
