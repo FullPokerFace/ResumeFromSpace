@@ -17,7 +17,7 @@ const MyResumes = () => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-6 mx-auto">
+    <div className="flex flex-wrap justify-center gap-6 gap-y-6 mx-auto h-full">
       {(thumbs as any).map((thumb) => (
         <img
           role="button"
