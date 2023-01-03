@@ -182,6 +182,20 @@ const startServer = async () => {
         });
     });
 
+    server.delete("/delete/:id", (request, response) => {
+      let db_connect = dbo.getDb();
+      let myquery = { _id: ObjectId(request.params.id) };
+      db_connect.collection("userResumes").deleteOne(myquery, function (err, obj) {
+        let myquery = { resumeId: request.params.id };
+        db_connect.collection("resumeThumbnails").deleteOne(myquery, function (err, obj) {
+          if (err) throw err;
+          response.json(obj);
+        });
+        if (err) throw err;
+      });
+    });
+
+
     server.all("*", (req, res) => {
       return handle(req, res);
     });

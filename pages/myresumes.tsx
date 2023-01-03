@@ -5,8 +5,11 @@ import { useDispatch } from "react-redux";
 import { setCurrentResume } from "../store/slices/appSlice";
 
 const MyResumes = () => {
-  const thumbs = useGetThumbs();
-  if (!thumbs || (thumbs as any)?.length === 0) return <></>;
+  const [thumbs, setThumbs] = useState([]);
+
+  useEffect(() => {
+    fetchNewThumbs().then((result) => setThumbs(result));
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -16,16 +19,38 @@ const MyResumes = () => {
     Router.push("/create");
   };
 
+  const deleteResume = async (id) => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({}),
+    };
+    await fetch(`delete/${id}`, options);
+    const result = await fetchNewThumbs();
+    setThumbs(result);
+  };
+
+  if (!thumbs || (thumbs as any)?.length === 0) return <div>Nothing, here</div>;
+
   return (
     <div className="flex flex-wrap justify-center gap-6 gap-y-6 mx-auto h-full">
       {(thumbs as any).map((thumb) => (
-        <img
-          role="button"
-          onClick={() => handleLoadResume(thumb.resumeId)}
-          key={thumb._id}
-          className="h-72 shadow-lg border border-slate-200 hover:scale-105 transition-all"
-          src={thumb.thumbnail}
-        />
+        <div key={thumb._id}>
+          <img
+            role="button"
+            onClick={() => handleLoadResume(thumb.resumeId)}
+            className="h-72 shadow-lg border border-slate-200 hover:scale-105 transition-all"
+            src={thumb.thumbnail}
+          />
+          <button
+            className="bg-red-600 text-white w-full p-3 hover:bg-red-700"
+            onClick={() => deleteResume(thumb.resumeId)}
+          >
+            Remove
+          </button>
+        </div>
       ))}
     </div>
   );
@@ -41,16 +66,6 @@ const fetchNewThumbs = async () => {
   const response = await fetch("/allThumbs", options);
   const result = await response.json();
   return result;
-};
-
-const useGetThumbs = () => {
-  const [thumbs, setThumbs] = useState([]);
-
-  useEffect(() => {
-    fetchNewThumbs().then((result) => setThumbs(result));
-  }, []);
-
-  return thumbs;
 };
 
 export default MyResumes;
