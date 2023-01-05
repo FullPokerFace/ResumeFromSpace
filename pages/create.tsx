@@ -44,7 +44,7 @@ const Create = () => {
 
 export default Create;
 
-const useGenerateNewId = (dispatch, resumeId) => {
+export const useGenerateNewId = (dispatch, resumeId) => {
   useEffect(() => {
     const generateId = async () => {
       dispatch(setIsLoading(true));

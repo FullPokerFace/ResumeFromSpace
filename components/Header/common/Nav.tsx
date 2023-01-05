@@ -1,39 +1,74 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { getAppState } from "../../../store/slices/appSlice";
+import Router from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAppState,
+  setActivePageTitle,
+  setCurrentResume,
+} from "../../../store/slices/appSlice";
 import Link from "next/link";
+import { deleteCookie } from "../../ResumePreview/utils/_commonUtils";
+
+interface SigleMenu {
+  title: string;
+  link: string;
+  actionBeforeNavigating?: Function;
+}
+
+type NavMenu = SigleMenu[];
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const { user } = useSelector(getAppState);
 
-  const navMenu = [
-    { title: "Create", link: "/create" },
-    { title: "My Resumes", link: "/myresumes" },
+  const { user, resumeId, activePageTitle } = useSelector(getAppState);
+
+  const dispatch = useDispatch();
+
+  const navMenu: NavMenu = [
+    {
+      title: "Create New",
+      link: "/create",
+      actionBeforeNavigating() {
+        deleteCookie("resume");
+        dispatch(setCurrentResume(null));
+      },
+    },
   ];
 
   if ((user as any)?.email)
-    navMenu.push({ title: (user as any)?.email, link: "/user" });
+    navMenu.push(
+      { title: "My Resumes", link: "/myresumes" },
+      { title: (user as any)?.email, link: "/user" }
+    );
 
-  const isThisPage = (link: string) => router?.pathname === link;
+  if (resumeId && (user as any)?.email) {
+    navMenu.unshift({ title: "Work on last draft", link: "/create" });
+  }
+
   return (
     <>
       <ul className="md:flex gap-4 hidden items-center">
         {navMenu &&
           navMenu.length > 0 &&
-          navMenu.map(({ title, link }) => (
-            <Link
-              key={link}
-              href={link}
-              className={`text-slate-800 font-semibold border-b-2 ${
-                isThisPage(link) ? "border-slate-800" : "border-transparent"
-              } hover:border-slate-800`}
-            >
-              {title}
-            </Link>
-          ))}
+          navMenu.map(
+            ({ title, link, actionBeforeNavigating = () => {} }, index) => (
+              <button
+                onClick={() => {
+                  dispatch(setActivePageTitle(String(title)));
+                  if (actionBeforeNavigating) actionBeforeNavigating();
+                  Router.push(link);
+                }}
+                key={link}
+                className={`text-slate-800 font-semibold border-b-2 ${
+                  activePageTitle === title
+                    ? "border-slate-800"
+                    : "border-transparent"
+                } hover:border-slate-800`}
+              >
+                {title}
+              </button>
+            )
+          )}
       </ul>
       <button className="md:hidden" onClick={() => setIsOpen(true)}>
         {burgerMenuIcon}

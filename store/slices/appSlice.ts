@@ -5,6 +5,7 @@ interface AppState {
     error: null | object;
     user: null | object;
     isLoading: boolean;
+    activePageTitle: null | string
 }
 
 const initialState: AppState = {
@@ -12,6 +13,7 @@ const initialState: AppState = {
     error: null,
     user: null,
     isLoading: false,
+    activePageTitle: null
 };
 
 type setResumeId = string | null
@@ -19,6 +21,7 @@ type setError = null | object
 type setUser = null | object
 type setIsLoading = boolean
 type setAppData = AppState
+type setActivePageTitle = null | string
 
 /**
  * Create a slice as a reducer containing actions.
@@ -59,6 +62,12 @@ export const appSlice = createSlice({
       action: PayloadAction<setAppData>
     ) => {
         state = action.payload;
+    },
+    setActivePageTitle: (
+      state: Draft<typeof initialState>,
+      action: PayloadAction<setActivePageTitle>
+    ) => {
+        state.activePageTitle = action.payload;
     }
   },
 });
@@ -72,7 +81,8 @@ export const {
     setError,
     setUser,
     setIsLoading,
-    setAppData
+    setAppData,
+    setActivePageTitle
 } = appSlice.actions;
 
 export default appSlice.reducer;

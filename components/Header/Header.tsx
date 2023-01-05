@@ -1,9 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
+import Router from "next/router";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import headerLogo from "../../assets/headerLogo.svg";
-import { setAppData, setUser } from "../../store/slices/appSlice";
+import {
+  setActivePageTitle,
+  setAppData,
+  setUser,
+} from "../../store/slices/appSlice";
 import { getSavedCookieValue } from "../ResumePreview/utils/_commonUtils";
 import Nav from "./common/Nav";
 
@@ -11,13 +15,18 @@ const Header = () => {
   const dispatch = useDispatch();
   useRehydrateUser(dispatch);
 
+  function handleLogoClick() {
+    Router.push("/");
+    dispatch(setActivePageTitle(null));
+  }
+
   return (
     <div className="flex justify-between content-center gap-2 cursor-pointer">
-      <Link href="/" passHref>
+      <button onClick={handleLogoClick}>
         <div>
           <Image src={headerLogo} alt="ResumeFromSpace logo"></Image>
         </div>
-      </Link>
+      </button>
       <Nav />
     </div>
   );
@@ -26,7 +35,13 @@ const Header = () => {
 const useRehydrateUser = (dispatch) => {
   useEffect(() => {
     let hasStoredUser = getSavedCookieValue("user");
-    if (hasStoredUser) dispatch(setUser(JSON.parse(hasStoredUser)));
+    if (hasStoredUser)
+      dispatch(
+        setUser({
+          ...JSON.parse(hasStoredUser),
+          isLoggedIn: true,
+        })
+      );
   }, []);
 };
 

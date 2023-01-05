@@ -6,7 +6,7 @@ export const getSavedCookieValue = (name) => {
       };
     });
   
-    return allCookies.find((cookie) => cookie.name === name)?.value || "";
+    return allCookies.find((cookie) => cookie.name === name)?.value || null;
   };
 
 export const isEmptyObject = (obj) => 
@@ -14,3 +14,7 @@ export const isEmptyObject = (obj) =>
     && Object.keys(obj).length === 0
     && Object.getPrototypeOf(obj) === Object.prototype
   ;
+
+  export function deleteCookie (name){
+    document.cookie = name + "=";
+  };  

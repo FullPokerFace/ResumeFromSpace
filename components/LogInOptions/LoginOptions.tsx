@@ -36,7 +36,7 @@ const LoginOptions = () => {
       if (response.ok) {
         const user = await response.json();
         document.cookie = `user=${String(JSON.stringify(user))}`;
-        dispatch(setUser({ ...user }));
+        dispatch(setUser({ ...user, isLoggedIn: true }));
       } else {
         dispatch(setError({ message: "User not found" }));
       }

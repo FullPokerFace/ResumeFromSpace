@@ -2,6 +2,10 @@ import Image from "next/image";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import {
+  deleteCookie,
+  getSavedCookieValue,
+} from "../components/ResumePreview/utils/_commonUtils";
 import { setCurrentResume } from "../store/slices/appSlice";
 
 const MyResumes = () => {
@@ -30,6 +34,10 @@ const MyResumes = () => {
     await fetch(`delete/${id}`, options);
     const result = await fetchNewThumbs();
     setThumbs(result);
+    if (getSavedCookieValue("resume") === id) {
+      deleteCookie("resume");
+      dispatch(setCurrentResume(null));
+    }
   };
 
   if (!thumbs || (thumbs as any)?.length === 0) return <div>Nothing, here</div>;
