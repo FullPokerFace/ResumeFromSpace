@@ -9,7 +9,7 @@ import {
 import { setCurrentResume } from "../store/slices/appSlice";
 
 const MyResumes = () => {
-  const [thumbs, setThumbs] = useState([]);
+  const [thumbs, setThumbs] = useState(null);
 
   useEffect(() => {
     fetchNewThumbs().then((result) => setThumbs(result));
@@ -40,7 +40,8 @@ const MyResumes = () => {
     }
   };
 
-  if (!thumbs || (thumbs as any)?.length === 0) return <div>Nothing, here</div>;
+  if (!thumbs) return <div></div>;
+  if ((thumbs as any)?.length === 0) return <div>Nothing, here</div>;
 
   return (
     <div className="flex flex-wrap justify-center gap-6 gap-y-6 mx-auto h-full">

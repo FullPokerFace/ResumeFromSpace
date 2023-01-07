@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAppState,
   setActivePageTitle,
-  setCurrentResume,
+  setUser,
 } from "../../../store/slices/appSlice";
-import Link from "next/link";
 import { deleteCookie } from "../../ResumePreview/utils/_commonUtils";
 
 interface SigleMenu {
@@ -24,24 +23,22 @@ const Nav = () => {
 
   const dispatch = useDispatch();
 
-  const navMenu: NavMenu = [
-    {
-      title: "Create New",
-      link: "/create",
-      actionBeforeNavigating() {
-        deleteCookie("resume");
-        dispatch(setCurrentResume(null));
-      },
-    },
-  ];
+  const navMenu: NavMenu = [{ title: "Create New", link: "/selectdesign" }];
 
   if ((user as any)?.email)
     navMenu.push(
       { title: "My Resumes", link: "/myresumes" },
-      { title: (user as any)?.email, link: "/user" }
+      {
+        title: `Logout (${(user as any)?.email})`,
+        link: "/",
+        actionBeforeNavigating() {
+          deleteCookie("user");
+          dispatch(setUser(null));
+        },
+      }
     );
 
-  if (resumeId && (user as any)?.email) {
+  if (resumeId) {
     navMenu.unshift({ title: "Work on last draft", link: "/create" });
   }
 
@@ -58,12 +55,12 @@ const Nav = () => {
                   if (actionBeforeNavigating) actionBeforeNavigating();
                   Router.push(link);
                 }}
-                key={link}
+                key={title}
                 className={`text-slate-800 font-semibold border-b-2 ${
                   activePageTitle === title
                     ? "border-slate-800"
                     : "border-transparent"
-                } hover:border-slate-800`}
+                } hover:border-slate-800 transition-all`}
               >
                 {title}
               </button>

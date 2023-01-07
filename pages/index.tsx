@@ -19,9 +19,7 @@ const Home: NextPage = () => {
   const dispatch = useDispatch();
 
   const handleStartNewResumeClick = () => {
-    deleteCookie("resume");
-    dispatch(setCurrentResume(null));
-    Router.push("/create");
+    Router.push("/selectdesign");
   };
   const handleContinueWorking = () => {
     Router.push("/create");
