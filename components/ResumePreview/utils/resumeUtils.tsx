@@ -18,7 +18,7 @@ export const generatePDF = async (
   } = sections || {};
 
   const fontUrl = window.location.origin;
-  // const bgImage = await imageToDataUrl(backgroundImage.src, 850, 1100);
+  const bgImage = await imageToDataUrl(backgroundImage.src, 850, 1100);
   let docDefinition = {
     compress: false,
     content: content,

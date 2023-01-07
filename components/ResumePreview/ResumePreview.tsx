@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import Breeze from "./resumesCollection/Breeze/Breeze";
 import {
   getRatio,
   openResumeInNewPage,
@@ -136,7 +135,7 @@ const ResumePreview: FC<Props> = (props) => {
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             isLoading={isPreviewLoading}
           />
-          <Breeze sections={sections} />
+          <canvas id="the-canvas"></canvas>
         </div>
       </div>
     </div>
