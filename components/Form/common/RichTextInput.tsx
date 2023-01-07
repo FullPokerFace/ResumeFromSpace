@@ -12,7 +12,7 @@ export const RichTextInput = ({
       placeholder={placeholder}
       autoComplete={autoComplete}
       id={title}
-      className="p-2 border-b border-t font-normal border-slate-400 focus:outline-0 resize-none"
+      className="p-2 border-b font-normal border-slate-400 focus:outline-0 resize-none"
       onChange={onChange}
     />
   </label>

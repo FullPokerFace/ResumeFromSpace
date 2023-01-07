@@ -26,11 +26,11 @@ export const generatePDF = async (
       primaryColor: colors.primaryColor,
       secondaryColor: colors.secondaryColor,
     }),
-    // background: {
-    //   image: bgImage,
-    //   width: 850,
-    //   height: 1100,
-    // },
+    background: {
+      image: bgImage,
+      width: 850,
+      height: 1100,
+    },
     defaultStyle: {
       font: "Montserrat",
     },

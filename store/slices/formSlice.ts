@@ -1,4 +1,5 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
+import { experienceProps, experienceSlice } from "./experienceInitial";
 import {
   personalInformationSlice,
   PersonalInformationProps,
@@ -10,6 +11,13 @@ export interface Field {
   type: string;
   title: string;
   value: string;
+  autoComplete?: string;
+}
+
+export interface DateField {
+  type: string;
+  title: string;
+  value: number;
   autoComplete?: string;
 }
 
@@ -30,6 +38,7 @@ export interface Sections {
   personalInformation: PersonalInformationProps;
   phoneEmailWeb: PhoneEmailWebProps;
   summary: summaryProps;
+  experience: experienceProps;
 }
 
 export interface Colors {
@@ -76,6 +85,7 @@ const initialState: FormState = {
     personalInformation: personalInformationSlice,
     phoneEmailWeb: phoneEmailWebSlice,
     summary: summarySlice,
+    experience: experienceSlice,
   },
 };
 
@@ -140,6 +150,7 @@ export const formSlice = createSlice({
           personalInformation: personalInformationSlice,
           phoneEmailWeb: phoneEmailWebSlice,
           summary: summarySlice,
+          experience: experienceSlice,
       };
     },
   },
