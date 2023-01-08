@@ -1,4 +1,5 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
+import { educationProps, educationSlice } from "./educationInitial";
 import { experienceProps, experienceSlice } from "./experienceInitial";
 import {
   personalInformationSlice,
@@ -39,6 +40,7 @@ export interface Sections {
   phoneEmailWeb: PhoneEmailWebProps;
   summary: summaryProps;
   experience: experienceProps;
+  education: educationProps;
 }
 
 export interface Colors {
@@ -86,6 +88,7 @@ const initialState: FormState = {
     phoneEmailWeb: phoneEmailWebSlice,
     summary: summarySlice,
     experience: experienceSlice,
+    education: educationSlice,
   },
 };
 
@@ -141,7 +144,14 @@ export const formSlice = createSlice({
       state: Draft<typeof initialState>,
       action: PayloadAction<Sections>
     ) => {
-      state.sections = action.payload;
+
+      state.sections = {
+        personalInformation: action.payload.personalInformation || personalInformationSlice,
+        phoneEmailWeb: action.payload.phoneEmailWeb || phoneEmailWebSlice,
+        summary: action.payload.summary || summarySlice,
+        experience: action.payload.experience || experienceSlice,
+        education: action.payload.education || educationSlice,
+      }
     },
     setInitialFormData: (
       state: Draft<typeof initialState>
@@ -151,6 +161,7 @@ export const formSlice = createSlice({
           phoneEmailWeb: phoneEmailWebSlice,
           summary: summarySlice,
           experience: experienceSlice,
+          education: educationSlice,
       };
     },
   },

@@ -57,7 +57,7 @@ const renderText = (text: string, style: string) => {
 const addIconWithText = (icon, text, label) => (
   { 
     columns: [
-      { width: 24, svg: icon, margin: [0,4] },
+      { width: 24, svg: icon },
       { stack: [
         { text: label, style: 't3' },
         { text: text, style: 't4' },
@@ -75,21 +75,66 @@ const addPhoneEmailWeb = (phone: string, email: string, web: string) => {
       { width: '*', text: ``},
     ],
     columnGap: 16,
-    margin: [0, 22]
+    margin: [0, 0, 0, 20]
   }
 }
 
-const addTitle = (title: string) => {
+function addTitle(title: string){
   return { text: title.toUpperCase(), style: 't5' }
 }
-const addText = (text: string) => {
-  return { text: text, style: 't6' }
+function addText(text: string, style = 't6'){
+  return { text: text, style }
 }
 
-const DIVIDER = (width: number) => ({ svg : `<svg width="${width}" height="1" viewBox="0 0 ${width} 1" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="${width}" height="1" fill="#BCBDC0"/></svg>`});
+function addList(list){
+
+
+  return { ul: list.map(item => ({ text: item, style: 't8'})) }
+}
+
+function getMonthAndYear(date){
+  const year = date.split('-')?.[0];
+  const month = date.split('-')?.[1];
+  return `${month} / ${year}`
+}
+
+function addIfNotEmpty(condition, array){
+  return condition ? array : []
+}
+
+function addExperience(experience){
+  const { fields } = experience || {};
+  const { position, company, from, to, summary, responsiblities
+  } = fields || {};
+  
+  return [
+    addTitle('Work Experience'),
+    DIVIDER(446),
+    renderText(position.value, 't3'),
+    renderText(`${company.value}  -  ${getMonthAndYear(from.value)} - ${getMonthAndYear(to.value)}`, 't7'),
+    addIfNotEmpty(summary.value, [addText(summary.value, 't9')]),
+    addList(responsiblities.value?.split('\n'))
+  ]
+}
+
+function addEducation(education){
+  const { fields } = education || {};
+  const { degree, major, name, city, from, to } = fields || {};
+  
+  return [
+    addTitle('Education'),
+    DIVIDER(232),
+    renderText(`${degree.value} in ${major.value}`, 't3'),
+    renderText(`${name.value}, ${city.value}`, 't10'),
+    renderText(`${from.value} - ${to.value}`, 't10'),
+  ]
+}
+
+const DIVIDER = (width: number) => ({ svg : `<svg width="${width}" height="1" viewBox="0 0 ${width} 1" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="${width}" height="1" fill="#BCBDC0"/></svg>`, style: 'svgLine'});
+const DIVIDER_NOMARGIN = (width: number) => ({ svg : `<svg width="${width}" height="1" viewBox="0 0 ${width} 1" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="${width}" height="1" fill="#BCBDC0"/></svg>`});
 
 export const generateBreezeContent = async (sections: Sections) => {
-  const { personalInformation, phoneEmailWeb, summary } = sections || {};
+  const { personalInformation, phoneEmailWeb, summary, experience, education } = sections || {};
   const { firstName, lastName, position, picture } =
     personalInformation?.fields || {};
   const { phone, email, web } = phoneEmailWeb?.fields || {};
@@ -99,7 +144,8 @@ export const generateBreezeContent = async (sections: Sections) => {
     { image: await generateRoundPhoto(picture?.value),
       width: 190,
       height: 190
-    }
+    },
+    addEducation(education)
   ]
 
   const leftSide = [
@@ -107,12 +153,13 @@ export const generateBreezeContent = async (sections: Sections) => {
     renderText(position.value.toUpperCase(), 't2'),
     DIVIDER(446),
     addPhoneEmailWeb(phone.value, email.value, web.value),
-    DIVIDER(446),
-    addTitle('Profile'),
-    DIVIDER(446),
-    addText(summaryFields.value),
-
-
+    DIVIDER_NOMARGIN(446),
+    addIfNotEmpty(summaryFields.value, [
+      addTitle('Summary'),
+      DIVIDER(446),
+      addText(summaryFields.value)
+    ]),
+    addExperience(experience)
   ]
 
 

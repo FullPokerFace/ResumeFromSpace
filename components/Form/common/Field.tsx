@@ -42,8 +42,6 @@ export const Field = (props: any) => {
     }
   }
 
-  console.log(props);
-
   return (
     <div
       className={`w-full ${props?.type === "richText" ? "" : "lg:w-1/2"}  p-2`}

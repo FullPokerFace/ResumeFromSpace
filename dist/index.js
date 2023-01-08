@@ -51,8 +51,8 @@ var fonts = {
     Montserrat: {
         normal: __dirname + '/../fonts/Montserrat/Montserrat-Regular.ttf',
         bold: __dirname + '/../fonts/Montserrat/Montserrat-Medium.ttf',
-        //   italics: __dirname + '/assets/fonts/Montserrat/Montserrat-Italic.ttf',
-        //   bolditalics: __dirname + '/assets/fonts/Montserrat/Montserrat-MediumItalic.ttf'
+          italics: __dirname + '/assets/fonts/Montserrat/Montserrat-Italic.ttf',
+          bolditalics: __dirname + '/assets/fonts/Montserrat/Montserrat-MediumItalic.ttf'
     }
 };
 var docDefinition = {

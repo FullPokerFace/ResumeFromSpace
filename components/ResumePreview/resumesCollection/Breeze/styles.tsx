@@ -31,14 +31,39 @@ const generateStyles = (props: styleProps) => {
     t5: {
       fontSize: 20,
       color: primaryColor,
-      margin: [0, 52, 0, 15],
+      margin: [0, 40, 0, 15],
       characterSpacing: 1,
     },
     t6: {
       fontSize: 12,
       color: secondaryColor,
-      margin: [4, 20, 4, 20],
       lineHeight: 1.25,
+    },
+    t7: {
+      fontSize: 12,
+      italics: true,
+      margin: [0, 8],
+      color: primaryColor,
+    },
+    t8: {
+      fontSize: 12,
+      color: secondaryColor,
+      margin: [20, 4],
+    },
+    t9: {
+      fontSize: 12,
+      color: secondaryColor,
+      margin: [0, 8],
+      lineHeight: 1.25,
+    },
+    t10: {
+      fontSize: 12,
+      italics: true,
+      margin: [0, 4],
+      color: primaryColor,
+    },
+    svgLine: {
+      margin: [0, 0, , 20],
     },
   };
 };

@@ -123,6 +123,7 @@ const ResumePreview: FC<Props> = (props) => {
         }}
       >
         <div
+          id="canvasContainer"
           className={`shadow-lg border border-slate-200 max-h-fit relative overflow-x-hidden ${
             isPreviewLoading ? "opacity-50" : ""
           }`}
@@ -135,7 +136,6 @@ const ResumePreview: FC<Props> = (props) => {
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             isLoading={isPreviewLoading}
           />
-          <canvas id="the-canvas"></canvas>
         </div>
       </div>
     </div>

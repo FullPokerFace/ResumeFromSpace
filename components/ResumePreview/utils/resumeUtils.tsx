@@ -1,6 +1,6 @@
 import pdfMake from "pdfmake";
 import generateStyles from "../resumesCollection/Breeze/styles";
-import backgroundImage from "../resumesCollection/Breeze/resumeBack.png";
+import backgroundImage from "../resumesCollection/Breeze/resumeBack2.png";
 import { Colors, Sections } from "../../../store/slices/formSlice";
 import * as pdfjsLib from "pdfjs-dist/build/pdf";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
@@ -11,13 +11,6 @@ export const generatePDF = async (
   content: any,
   colors: Colors
 ) => {
-  const {
-    personalInformation: {
-      fields: { firstName, lastName, position, picture },
-    },
-  } = sections || {};
-
-  const fontUrl = window.location.origin;
   const bgImage = await imageToDataUrl(backgroundImage.src, 850, 1100);
   let docDefinition = {
     compress: false,
@@ -26,11 +19,11 @@ export const generatePDF = async (
       primaryColor: colors.primaryColor,
       secondaryColor: colors.secondaryColor,
     }),
-    background: {
-      image: bgImage,
-      width: 850,
-      height: 1100,
-    },
+    // background: {
+    //   image: bgImage,
+    //   width: 850,
+    //   height: 1100,
+    // },
     defaultStyle: {
       font: "Montserrat",
     },
@@ -42,17 +35,6 @@ export const generatePDF = async (
   };
 
   return docDefinition;
-
-  (pdfMake as any).fonts = {
-    Montserrat: {
-      normal: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      // bolditalics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      // italics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
-    },
-  };
-  const pdfDocGenerator = (pdfMake as any).createPdf(docDefinition);
-  pdfDocGenerator.open();
 };
 
 const imageToDataUrl = async (src, width, height) => {
@@ -81,8 +63,8 @@ export const updateResumeOnPage = async (
   (pdfDocGenerator as any).fonts = {
     Montserrat: {
       normal: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      // bolditalics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
-      // italics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+      bolditalics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Regular.ttf`,
+      italics: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Italic.ttf`,
       bold: `${fontUrl}/assets/fonts/Montserrat/Montserrat-Bold.ttf`,
     },
   };
@@ -98,7 +80,10 @@ export const updateResumeOnPage = async (
     // Support HiDPI-screens.
     let outputScale = window.devicePixelRatio || 1;
 
-    let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+    document.getElementById("resumeCanvas")?.remove();
+    let canvas = document.createElement("canvas") as HTMLCanvasElement;
+    canvas.id = "resumeCanvas";
+    document.getElementById("canvasContainer")?.append(canvas);
     let context = canvas.getContext("2d");
 
     canvas.width = Math.floor(viewport.width * outputScale);
@@ -203,7 +188,7 @@ export const updateResumeOnServer = async (
 
 export const updateThumbnailOnServer = async (user, id) => {
   if (!isEmptyObject(user)) {
-    let canvas = document.getElementById("the-canvas") as HTMLCanvasElement;
+    let canvas = document.getElementById("resumeCanvas") as HTMLCanvasElement;
     const options = {
       method: "POST",
       headers: {
